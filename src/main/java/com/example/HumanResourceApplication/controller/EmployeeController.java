@@ -1,28 +1,30 @@
 package com.example.HumanResourceApplication.controller;
 
-
-import com.example.HumanResourceApplication.entity.Employee;
+import com.example.HumanResourceApplication.projection.ManagerIdProjection;
+import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/employees")
+@RequestMapping("/api/v1")
 public class EmployeeController {
 
-    private final EmployeeRepository repo;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-    public EmployeeController(EmployeeRepository repo) {
-        this.repo = repo;
-    }
+    @GetMapping("/managers")
+    public List<ManagerProjection> getAllManagers() {
 
-    @GetMapping("/listallManagerDetails")
-    public List<Employee> getAllManagers() {
+        List<Long> ids = employeeRepository.findDistinctByManagerIdIsNotNull()
+                .stream()
+                .map(ManagerIdProjection::getManagerId)
+                .toList();
 
-        List<Long> ids = repo.findDistinctManagerIds();
-        return repo.getManagers(ids);
+        return employeeRepository.findByEmployeeIdIn(ids);
     }
 }

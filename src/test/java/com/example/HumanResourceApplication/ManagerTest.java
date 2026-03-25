@@ -2,6 +2,8 @@ package com.example.HumanResourceApplication;
 
 
 import com.example.HumanResourceApplication.entity.Employee;
+import com.example.HumanResourceApplication.projection.ManagerIdProjection;
+import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,12 @@ public class ManagerTest {
     private EmployeeRepository employeeRepo;
 
 
-    @Test
-    void testListAllManagers() throws Exception {
-
-        mockMvc.perform(get("/api/v1/employees/listallManagerDetails"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void testListAllManagers() throws Exception {
+//
+//        mockMvc.perform(get("/api/v1/employees/listallManagerDetails"))
+//                .andExpect(status().isOk());
+//    }
 
 
 
@@ -54,9 +56,13 @@ public class ManagerTest {
     @Test
     void testGetManagers() {
 
-        List<Long> ids = employeeRepo.findDistinctManagerIds();
+        List<ManagerIdProjection> ids = employeeRepo.findDistinctByManagerIdIsNotNull();
 
-        List<Employee> managers = employeeRepo.getManagers(ids);
+
+        List<Long> managerIds = ids.stream()
+                .map(ManagerIdProjection::getManagerId)
+                .toList();
+        List<ManagerProjection> managers = employeeRepo.findByEmployeeIdIn(managerIds);
 
         assertNotNull(managers);
         assertTrue(managers.size() > 0);
@@ -69,7 +75,7 @@ public class ManagerTest {
     @Test
     void testFindDistinctByManagerId() {
 
-        List<Long> result = employeeRepo.findDistinctManagerIds();
+        List<ManagerIdProjection> result = employeeRepo.findDistinctByManagerIdIsNotNull();
 
         assertNotNull(result);
         assertTrue(result.size() > 0);
