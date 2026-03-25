@@ -1,9 +1,7 @@
 package com.example.HumanResourceApplication.entity;
+//import com.example.HumanResourceApplication.entity.Location;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +17,13 @@ public class Department
     private Long id;
 
     private String name;
+
+    // Many Departments -> one manager (employee)
+//    @ManyToOne
+
+
+    // Many departments -> one location
+//    @ManyToOne
+//    @JoinColumn(name = "location_id")
+//    private Location location;
 }

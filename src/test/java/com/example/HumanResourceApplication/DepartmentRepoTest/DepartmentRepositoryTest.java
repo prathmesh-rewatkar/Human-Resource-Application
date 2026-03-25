@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -26,6 +29,7 @@ public class DepartmentRepositoryTest
         repository.save(dept);
     }
 
+    // Get All Departments
     @Test
     void testFindAllDepartments() {
         var list = repository.findAll();
@@ -34,14 +38,18 @@ public class DepartmentRepositoryTest
         assertThat(list.get(0).getName()).isEqualTo("HR");
     }
 
-//    @Test
-//    void testFindById() {
-//        var found = repository.findById(dept.getId());
-//
-//        assertThat(found).isPresent();
-//        assertThat(found.get().getName()).isEqualTo("HR");
-//    }
+    // Get Department By ID
+    @Test
+    void testFindDepartmentById() {
+        Department dept = repository.save(new Department(null, "HR"));
 
+        Department found = repository.findById(dept.getId()).orElse(null);
+
+        assertThat(found).isNotNull();
+        assertThat(found.getName()).isEqualTo("HR");
+    }
+
+    // Add Department
     @Test
     void testAddDepartment()
     {
@@ -59,5 +67,35 @@ public class DepartmentRepositoryTest
         assertThat(saved.getName()).isEqualTo("HR");
 
         System.out.println(saved);
+    }
+
+    // Search Department By Name
+    @Test
+    void testFindByName()
+    {
+        repository.save(new Department(null, "HR"));
+        List<Department> result = repository.findByName("HR");
+        assertThat(result).isNotEmpty();
+    }
+
+    // Count Departments
+    @Test
+    void testCountDepartments() {
+        repository.save(new Department(null, "HR"));
+        repository.save(new Department(null, "Accounts"));
+
+        long count = repository.count();
+
+        assertThat(count).isEqualTo(6);
+    }
+
+    // Exists By ID
+    @Test
+    void testExistsById() {
+        Department dept = repository.save(new Department(null, "HR"));
+
+        boolean exists = repository.existsById(dept.getId());
+
+        assertThat(exists).isTrue();
     }
 }
