@@ -10,5 +10,4 @@ public class HumanResourceApplication {
 
         SpringApplication.run(HumanResourceApplication.class, args);
 	}
-
 }
