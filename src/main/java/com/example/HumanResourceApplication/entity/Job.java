@@ -3,6 +3,9 @@ package com.example.HumanResourceApplication.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "jobs")   
 @Data
@@ -22,4 +25,18 @@ public class Job {
 
     @Column(name = "max_salary")
     private Double maxSalary;
+
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY) 
+private List<Employee> employees = new ArrayList<>();
+
+    // @OneToMany(mappedBy = "job") 
+    // // private List<JobHistory> jobHistories;
+
+    //Custom constructor
+    public Job(String jobId, String jobTitle, Double minSalary, Double maxSalary) {
+        this.jobId = jobId;
+        this.jobTitle = jobTitle;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+    }
 }

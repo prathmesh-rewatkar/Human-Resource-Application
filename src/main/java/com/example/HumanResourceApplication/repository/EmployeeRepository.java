@@ -15,13 +15,11 @@ import java.util.Optional;
 //@RepositoryRestResource(path = "employees")
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-
-
     Optional<Employee> findByEmployeeId(Long empId);
 
 
-    List<ManagerIdProjection> findDistinctByManagerIdIsNotNull();
+    // List<ManagerIdProjection> findDistinctByManagerIdIsNotNull();
 
     // Step 2: Return managers as PROJECTION
-    List<ManagerProjection> findByEmployeeIdIn(List<Long> managerIds);
+    // List<ManagerProjection> findByEmployeeIdIn(List<Long> managerIds);
 }

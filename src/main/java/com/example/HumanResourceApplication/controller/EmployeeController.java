@@ -17,14 +17,14 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @GetMapping("/managers")
-    public List<ManagerProjection> getAllManagers() {
+    // @GetMapping("/managers")
+    // public List<ManagerProjection> getAllManagers() {
 
-        List<Long> ids = employeeRepository.findDistinctByManagerIdIsNotNull()
-                .stream()
-                .map(ManagerIdProjection::getManagerId)
-                .toList();
+    //     List<Long> ids = employeeRepository.findDistinctByManagerIdIsNotNull()
+    //             .stream()
+    //             .map(ManagerIdProjection::getManagerId)
+    //             .toList();
 
-        return employeeRepository.findByEmployeeIdIn(ids);
-    }
+    //     return employeeRepository.findByEmployeeIdIn(ids);
+    // }
 }

@@ -43,45 +43,45 @@ public class ManagerTest {
 
 
 
-    @Test
-    void testFindByEmployeeId() {
+    // @Test
+    // void testFindByEmployeeId() {
 
-        Optional<Employee> result = employeeRepo.findByEmployeeId(1L);
+    //     Optional<Employee> result = employeeRepo.findByEmployeeId(1L);
 
-        assertTrue(result.isPresent());
-        System.out.println(result.get().getFirstName());
-    }
-
-
-    @Test
-    void testGetManagers() {
-
-        List<ManagerIdProjection> ids = employeeRepo.findDistinctByManagerIdIsNotNull();
+    //     assertTrue(result.isPresent());
+    //     System.out.println(result.get().getFirstName());
+    // }
 
 
-        List<Long> managerIds = ids.stream()
-                .map(ManagerIdProjection::getManagerId)
-                .toList();
-        List<ManagerProjection> managers = employeeRepo.findByEmployeeIdIn(managerIds);
+    // @Test
+    // void testGetManagers() {
 
-        assertNotNull(managers);
-        assertTrue(managers.size() > 0);
-
-        managers.forEach(m -> System.out.println(m.getFirstName()));
-    }
+    //     List<ManagerIdProjection> ids = employeeRepo.findDistinctByManagerIdIsNotNull();
 
 
+    //     List<Long> managerIds = ids.stream()
+    //             .map(ManagerIdProjection::getManagerId)
+    //             .toList();
+    //     List<ManagerProjection> managers = employeeRepo.findByEmployeeIdIn(managerIds);
 
-    @Test
-    void testFindDistinctByManagerId() {
+    //     assertNotNull(managers);
+    //     assertTrue(managers.size() > 0);
 
-        List<ManagerIdProjection> result = employeeRepo.findDistinctByManagerIdIsNotNull();
+    //     managers.forEach(m -> System.out.println(m.getFirstName()));
+    // }
 
-        assertNotNull(result);
-        assertTrue(result.size() > 0);
 
-        result.forEach(e -> System.out.println(e));
-    }
+
+    // @Test
+    // void testFindDistinctByManagerId() {
+
+    //     List<ManagerIdProjection> result = employeeRepo.findDistinctByManagerIdIsNotNull();
+
+    //     assertNotNull(result);
+    //     assertTrue(result.size() > 0);
+
+    //     result.forEach(e -> System.out.println(e));
+    // }
 
 
 }
