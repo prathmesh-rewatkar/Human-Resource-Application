@@ -2,7 +2,6 @@ package com.example.HumanResourceApplication.test;
 
 
 import com.example.HumanResourceApplication.entity.Job;
-import com.example.HumanResourceApplication.repository.JobRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

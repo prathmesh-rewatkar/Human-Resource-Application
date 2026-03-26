@@ -5,9 +5,9 @@ import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +18,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
     Optional<Employee> findByEmployeeId(Long empId);
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty();
+
+    @RestResource(path = "by-email", rel = "managerByEmail")
+    ManagerProjection findDistinctBySubordinatesIsNotEmptyAndEmail(String email);
 
 
-    List<ManagerIdProjection> findDistinctByManagerIdIsNotNull();
-
-    // Step 2: Return managers as PROJECTION
-    List<ManagerProjection> findByEmployeeIdIn(List<Long> managerIds);
 }

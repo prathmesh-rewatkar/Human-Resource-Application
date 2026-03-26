@@ -11,6 +11,6 @@ public interface ManagerProjection {
     Double getSalary();
 
     String getPhoneNumber();
-    Long getManagerId();
-    Long getDepartmentId();
+    String getDepartment_DepartmentName();
+
 }

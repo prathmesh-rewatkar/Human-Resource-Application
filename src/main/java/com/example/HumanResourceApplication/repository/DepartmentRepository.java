@@ -9,5 +9,5 @@ import java.util.List;
 @RepositoryRestResource(path = "department")
 public interface DepartmentRepository extends JpaRepository<Department,Long>
 {
-    List<Department> findByName(String name);
+    List<Department> findByDepartmentName(String name);
 }

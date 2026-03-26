@@ -1,12 +1,11 @@
 package com.example.HumanResourceApplication.entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "locations")
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Location {
 
     @Id
-    @Column(name = "location_id")
+    @Column(name = "location_id" ,nullable = false )
     private Integer locationId;
 
     @Column(name = "street_address", length = 40)
@@ -30,4 +29,12 @@ public class Location {
 
     @Column(name = "state_province", length = 25)
     private String stateProvince;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Country country ;
+
+    @OneToMany(mappedBy = "location" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private List<Department> departments ;
+
 }

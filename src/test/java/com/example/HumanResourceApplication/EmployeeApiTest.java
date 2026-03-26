@@ -24,4 +24,19 @@ public class EmployeeApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.employees").exists());
     }
+
+    @Test
+    void testGetManagerByEmail() throws Exception {
+
+        mockMvc.perform(get("/api/v1/manager/by-email")
+                        .param("email", "SHIGGINS"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("SHIGGINS"));
+    }
+
+    @Test
+    void testgetAllManagers()throws Exception{
+        mockMvc.perform(get("api/v1/managers"))
+                .andExpect(status().isOk());
+    }
 }

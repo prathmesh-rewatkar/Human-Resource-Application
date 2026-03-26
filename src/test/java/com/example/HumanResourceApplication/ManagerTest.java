@@ -2,7 +2,6 @@ package com.example.HumanResourceApplication;
 
 
 import com.example.HumanResourceApplication.entity.Employee;
-import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -13,12 +12,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -31,22 +31,27 @@ public class ManagerTest {
     MockMvc mockMvc;
 
     @Autowired
-    private EmployeeRepository employeeRepo;
+    private EmployeeRepository employeeRepository;
 
+    @Test
+    void testGetManagerByEmail() throws Exception {
 
-//    @Test
-//    void testListAllManagers() throws Exception {
-//
-//        mockMvc.perform(get("/api/v1/employees/listallManagerDetails"))
-//                .andExpect(status().isOk());
-//    }
+        mockMvc.perform(get("/api/v1/manager/by-email")
+                        .param("email", "SHIGGINS"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("SHIGGINS"));
+    }
 
-
+    @Test
+    void testgetAllManagers()throws Exception{
+        mockMvc.perform(get("/api/v1/managers"))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void testFindByEmployeeId() {
 
-        Optional<Employee> result = employeeRepo.findByEmployeeId(1L);
+        Optional<Employee> result = employeeRepository.findByEmployeeId(100L);
 
         assertTrue(result.isPresent());
         System.out.println(result.get().getFirstName());
@@ -56,31 +61,22 @@ public class ManagerTest {
     @Test
     void testGetManagers() {
 
-        List<ManagerIdProjection> ids = employeeRepo.findDistinctByManagerIdIsNotNull();
 
-
-        List<Long> managerIds = ids.stream()
-                .map(ManagerIdProjection::getManagerId)
-                .toList();
-        List<ManagerProjection> managers = employeeRepo.findByEmployeeIdIn(managerIds);
+        List<ManagerProjection> managers = employeeRepository.findDistinctBySubordinatesIsNotEmpty();
 
         assertNotNull(managers);
         assertTrue(managers.size() > 0);
-
         managers.forEach(m -> System.out.println(m.getFirstName()));
     }
 
-
-
     @Test
-    void testFindDistinctByManagerId() {
+    void testFindManagerByEmail(){
+        var result = employeeRepository
+                .findDistinctBySubordinatesIsNotEmptyAndEmail("SHIGGINS");
 
-        List<ManagerIdProjection> result = employeeRepo.findDistinctByManagerIdIsNotNull();
-
-        assertNotNull(result);
-        assertTrue(result.size() > 0);
-
-        result.forEach(e -> System.out.println(e));
+        // ✅ Assertions
+        assertThat(result).isNotNull();
+        assertThat(result.getEmail()).isEqualTo("SHIGGINS");
     }
 
 
