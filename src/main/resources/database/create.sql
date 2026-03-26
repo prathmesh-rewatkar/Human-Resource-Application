@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS HR;
+
 
 
 use HR;
@@ -95,4 +95,4 @@ create table employees (
 );
 
 
-drop database hr_db;
+
