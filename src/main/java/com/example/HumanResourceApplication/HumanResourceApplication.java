@@ -11,5 +11,4 @@ public class HumanResourceApplication {
         SpringApplication.run(HumanResourceApplication.class, args);
 		System.out.println("running");
 	}
-
 }
