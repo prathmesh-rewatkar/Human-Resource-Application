@@ -1,7 +1,4 @@
-
-
-
-use HR;
+USE HR;
 
 DROP TABLE IF EXISTS regions;
 create table regions (
