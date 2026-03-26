@@ -1,4 +1,4 @@
-create database HR;
+CREATE DATABASE IF NOT EXISTS HR;
 
 
 use HR;
