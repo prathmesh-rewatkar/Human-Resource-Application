@@ -50,8 +50,8 @@ jobs:
       # 4. Initialize database (schema + data)
       - name: Initialize Database
         run: |
-          mysql -h 127.0.0.1 -u root -proot1234 testing < database/create.sql
-          mysql -h 127.0.0.1 -u root -proot1234 testing < database/insertdata.sql
+          mysql -h 127.0.0.1 -u root -proot1234 testing < src/main/resources/database/create.sql
+          mysql -h 127.0.0.1 -u root -proot1234 testing < src/main/resources/database/insertdata.sql
 
       # 5. Setup Java
       - name: Set up JDK 17
