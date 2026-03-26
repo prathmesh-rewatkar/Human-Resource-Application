@@ -1,0 +1,89 @@
+name: PR Build & Test Pipeline
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root1234
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot1234"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Install MySQL client
+      - name: Install MySQL Client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+      # 3. Wait for MySQL to be ready
+      - name: Wait for MySQL
+        run: |
+          for i in {1..15}; do
+            mysql -h 127.0.0.1 -u root -proot1234 -e "SELECT 1" && break
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+
+      # 4. Initialize database (schema + data)
+      - name: Initialize Database
+        run: |
+          mysql -h 127.0.0.1 -u root -proot1234 testing < database/create.sql
+          mysql -h 127.0.0.1 -u root -proot1234 testing < database/insertdata.sql
+
+      # 5. Setup Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # 6. Run tests
+      - name: Run Maven Tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/testing?useSSL=false&allowPublicKeyRetrieval=true
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: root1234
+        run: mvn clean test -Dspring.profiles.active=test
+
+      # 7. Publish test report (even if tests fail)
+      - name: Publish Test Report
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: "target/surefire-reports/*.xml"
+
+      # 8. Build JAR (only if tests pass)
+      - name: Build JAR
+        if: success()
+        run: mvn package -DskipTests
+
+      # 9. Upload JAR artifact
+      - name: Upload JAR Artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-partner-portal-build
+          path: target/*.jar
+          retention-days: 14
