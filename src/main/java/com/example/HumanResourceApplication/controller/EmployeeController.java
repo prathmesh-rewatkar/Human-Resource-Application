@@ -1,15 +1,17 @@
 package com.example.HumanResourceApplication.controller;
 
-import com.example.HumanResourceApplication.projection.ManagerIdProjection;
+import com.example.HumanResourceApplication.dto.UpdateManagerDTO;
+import com.example.HumanResourceApplication.entity.Employee;
+import com.example.HumanResourceApplication.exception.ResourceNotFoundException;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1")
 public class EmployeeController {
@@ -19,13 +21,11 @@ public class EmployeeController {
 
     @GetMapping("/managers")
     public List<ManagerProjection> getAllManagers() {
-
-//        List<Long> ids = employeeRepository.findDistinctByManagerIdIsNotNull()
-//                .stream()
-//                .map(ManagerIdProjection::getManagerId)
-//                .toList();
-
-        return employeeRepository.findDistinctBySubordinatesIsNotEmpty();
+        List<ManagerProjection>managers= employeeRepository.findDistinctBySubordinatesIsNotEmpty();
+        if (managers.isEmpty()) {
+            throw new ResourceNotFoundException("No managers found");
+        }
+        return managers;
     }
 
 
@@ -33,5 +33,39 @@ public class EmployeeController {
     public ManagerProjection getManagerByEmail(@RequestParam String email) {
         return employeeRepository
                 .findDistinctBySubordinatesIsNotEmptyAndEmail(email);
+    }
+
+    @GetMapping("/manager/by-department")
+    public List<ManagerProjection> getManagerByDepartment(@RequestParam String departmentName) {
+        return employeeRepository
+                .findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName(departmentName);
+    }
+
+
+    @PutMapping("/update-manager")
+    public ResponseEntity<?> updateManager(@RequestBody UpdateManagerDTO dto) {
+
+
+        Employee employee = employeeRepository.findByEmployeeId(dto.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+
+        Employee newManager = employeeRepository.findByEmployeeId(dto.getNewManagerId())
+                .orElseThrow(() -> new ResourceNotFoundException("New Manager not found"));
+
+        if (employee.getEmployeeId().equals(newManager.getEmployeeId())) {
+            throw  new ResourceNotFoundException("Employee cannot be their own manager");
+        }
+
+        if (employeeRepository.getHierarchy(newManager.getEmployeeId())
+                .stream()
+                .anyMatch(e -> e.getEmployeeId().equals(employee.getEmployeeId()))) {
+            throw new ResourceNotFoundException("Circular hierarchy detected");
+        }
+
+
+        employee.setManager(newManager);
+
+        employeeRepository.save(employee);
+        return ResponseEntity.ok("Manager updated successfully");
     }
 }
