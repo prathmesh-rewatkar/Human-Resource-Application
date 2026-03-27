@@ -1,4 +1,4 @@
-package com.example.HumanResourceApplication;
+package com.example.HumanResourceApplication.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.HumanResourceApplication;
+package com.example.HumanResourceApplication.repository;
 
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;

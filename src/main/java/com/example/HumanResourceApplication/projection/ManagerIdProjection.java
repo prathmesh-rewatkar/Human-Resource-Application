@@ -1,6 +1,8 @@
 package com.example.HumanResourceApplication.projection;
 
+import java.math.BigDecimal;
+
 public interface ManagerIdProjection {
 
-     Long getManagerId();
+    Double getManagerId();
 }

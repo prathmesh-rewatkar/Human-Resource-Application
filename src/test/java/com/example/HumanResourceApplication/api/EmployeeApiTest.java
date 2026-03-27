@@ -1,4 +1,4 @@
-package com.example.HumanResourceApplication;
+package com.example.HumanResourceApplication.api;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
