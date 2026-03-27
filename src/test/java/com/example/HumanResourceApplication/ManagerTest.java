@@ -2,6 +2,7 @@ package com.example.HumanResourceApplication;
 
 
 import com.example.HumanResourceApplication.entity.Employee;
+import com.example.HumanResourceApplication.projection.EmployeeProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ public class ManagerTest {
     }
 
     @Test
-    void testFindManagerByEmail(){
+    void testFindManagerByEmail_CorrectEmail(){
         var result = employeeRepository
                 .findDistinctBySubordinatesIsNotEmptyAndEmail("SHIGGINS");
 
@@ -79,6 +80,50 @@ public class ManagerTest {
         assertThat(result.getEmail()).isEqualTo("SHIGGINS");
     }
 
+
+    @Test
+    void testFindManagerByEmail_WrongEmail(){
+        var result = employeeRepository
+                .findDistinctBySubordinatesIsNotEmptyAndEmail("sam@gmail.com");
+
+        // ✅ Assertions
+        assertThat(result).isNull();
+        //assertThat(result.getEmail()).isEqualTo("SHIGGINS");
+    }
+
+
+    @Test
+    void testFindByManagerId_WithData(){
+        List<EmployeeProjection> list=employeeRepository.findByManager_EmployeeId(101L);
+        assertThat(list).isNotNull();
+        assertThat(list.size()>0);
+        list.forEach(m-> System.out.println(m.getFirstName()));
+    }
+
+
+    @Test
+    void testFindByManagerId_NoData() {
+        List<EmployeeProjection> list = employeeRepository.findByManager_EmployeeId(9999L);
+
+        assertThat(list).isNotNull();
+        assertThat(list.size()==0);
+    }
+
+    @Test
+    void testFindHierarchy_ValidId(){
+        List<Employee>list=employeeRepository.getHierarchy(101L);
+        assertThat(list).isNotNull();
+        assertThat(list.size()>0);
+        list.forEach(m-> System.out.println(m.getEmployeeId()));
+    }
+
+    @Test
+    void testFindHierarchy_InvalidId(){
+        assertThrows(RuntimeException.class, () -> {
+            employeeRepository.getHierarchy(9999L);
+        });
+
+    }
 
 }
 

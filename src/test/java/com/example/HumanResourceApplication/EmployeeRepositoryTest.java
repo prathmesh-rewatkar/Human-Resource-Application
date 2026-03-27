@@ -2,6 +2,7 @@ package com.example.HumanResourceApplication;
 
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
+import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
