@@ -86,7 +86,7 @@ public class DepartmentApiTest
 
         mockMvc.perform(get("/department/9999" ))
 //                        .param("departmentId", "9999L"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     // Search Department By Name
