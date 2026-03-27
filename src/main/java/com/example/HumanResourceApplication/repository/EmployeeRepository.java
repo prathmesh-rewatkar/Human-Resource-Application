@@ -6,6 +6,7 @@ import com.example.HumanResourceApplication.projection.EmployeeProjection;
 import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 
@@ -15,10 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 
-//@RepositoryRestResource(path = "employees")
+@RepositoryRestResource(path = "employees")
 public interface EmployeeRepository extends JpaRepository<Employee, Double> {
 
     Optional<Employee> findByEmployeeId(Double empId);
+
     List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty();
 
     //List<EmployeeProjection>findByManagerId(Long Id);
@@ -28,7 +30,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Double> {
     ManagerProjection findDistinctBySubordinatesIsNotEmptyAndEmail(String email);
 
 
-    default public List<Employee> getHierarchy(Double id) {
+    default List<Employee> getHierarchy(Double id) {
         List<Employee> hierarchy = new ArrayList<>();
 
         Employee current = findByEmployeeId(id)
@@ -41,6 +43,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Double> {
 
         return hierarchy;
     }
+
+    @RestResource(path = "by-department", rel = "managersByDepartment")
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName(String departmentName);
 
 
     long countByManager_EmployeeId(Double managerId);
