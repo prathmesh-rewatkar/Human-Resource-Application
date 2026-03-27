@@ -69,7 +69,7 @@ create table employees (
   primary key (employee_id),
   unique (email),
   foreign key (job_id)
-  references JOBS (job_id),
+  references jobs (job_id),
   foreign key (manager_id)
   references employees (employee_id),
   foreign key (department_id)
