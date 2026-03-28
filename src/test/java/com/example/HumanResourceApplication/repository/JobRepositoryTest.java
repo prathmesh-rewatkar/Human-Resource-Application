@@ -17,7 +17,7 @@ public class JobRepositoryTest {
     @Autowired
     private JobRepository repository;
 
-    // ✅ NO setUp()
+    
 
     @Test
     void testFindAllJobs() {
