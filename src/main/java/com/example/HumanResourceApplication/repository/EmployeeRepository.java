@@ -2,6 +2,7 @@ package com.example.HumanResourceApplication.repository;
 
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.projection.EmployeeProjection;
+import com.example.HumanResourceApplication.projection.EmployeeRecordProjection;
 import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,7 +25,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     //List<EmployeeProjection>findByManagerId(Long Id);
 
-    List<EmployeeProjection> findByManager_EmployeeId(Integer id);
+    List<EmployeeRecordProjection> findByManager_EmployeeId(Integer id);
+
+
+
     @RestResource(path = "by-email", rel = "managerByEmail")
     ManagerProjection findDistinctBySubordinatesIsNotEmptyAndEmail(String email);
 

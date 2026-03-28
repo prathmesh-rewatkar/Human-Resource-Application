@@ -6,12 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+
 
     // 1. Validation Errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -104,4 +108,15 @@ public class GlobalExceptionHandler {
                 "errors", errors
         ), HttpStatus.BAD_REQUEST);
     }
+
+
+    //7.Invalid Input in URL
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity
+                .badRequest()
+                .body("Invalid ID format. Please provide a numeric value.");
+    }
+
+
 }

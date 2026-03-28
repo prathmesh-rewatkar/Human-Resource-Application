@@ -3,6 +3,7 @@ package com.example.HumanResourceApplication.controller;
 import com.example.HumanResourceApplication.dto.UpdateManagerDTO;
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.exception.ResourceNotFoundException;
+import com.example.HumanResourceApplication.projection.EmployeeRecordProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,33 @@ public class EmployeeController {
             throw new ResourceNotFoundException("No managers found");
         }
         return managers;
+    }
+
+
+    @GetMapping("/managers/{id}/subordinates")
+    public List<EmployeeRecordProjection> getSubordinates(@PathVariable Integer id) {
+
+        if (!employeeRepository.existsById(id)){
+            throw new ResourceNotFoundException("Manager not found");
+        }
+
+        return employeeRepository.findByManager_EmployeeId(id);
+    }
+
+    @DeleteMapping("/deleteManager/{id}")
+    public ResponseEntity<?>deleteManager(@PathVariable Integer id){
+        Employee e=employeeRepository.findByEmployeeId(id)
+                .orElseThrow(()->new ResourceNotFoundException("Employee Not Found to be deleted"));
+
+        Employee manager=e.getManager();
+        List<Employee>subordinates=e.getSubordinates();
+        if(!subordinates.isEmpty()){
+            for(Employee emp:subordinates){
+                emp.setManager(manager);
+            }
+        }
+        employeeRepository.delete(e);
+        return ResponseEntity.ok("Manager deleted and subordinates reassigned");
     }
 
 

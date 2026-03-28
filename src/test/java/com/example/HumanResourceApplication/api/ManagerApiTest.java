@@ -40,6 +40,55 @@ public class ManagerApiTest {
                 .andExpect(jsonPath("$.email").value("SHIGGINS"));
     }
 
+
+    @Test
+    void testGetSubordinates_InvalidPathVariable() throws Exception {
+
+        mockMvc.perform(get("/api/v1/managers/abc/subordinates"))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    void testGetSubordinates_ValidManager() throws Exception {
+
+        //when(employeeRepository.existsById(101)).thenReturn(true);
+
+        mockMvc.perform(get("/api/v1/managers/101/subordinates"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetSubordinates_ManagerNotFound() throws Exception {
+
+        //when(employeeRepository.existsById(999)).thenReturn(false);
+
+        mockMvc.perform(get("/api/v1/managers/999/subordinates"))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    @Transactional
+    void testDeleteEmployee_InvalidPathVariable() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/deleteManager/abc"))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    @Transactional
+    void testDeleteEmployee_ValidId() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/deleteManager/101"))
+                .andExpect(status().isOk())
+               .andExpect(content().string("Manager deleted and subordinates reassigned"));
+    }
+
+
+
+
     @Test
     void testgetAllManagersByDepartment() throws Exception {
         mockMvc.perform(get("/api/v1/manager/by-department")
