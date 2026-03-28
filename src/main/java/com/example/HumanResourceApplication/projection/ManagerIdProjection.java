@@ -4,5 +4,5 @@ import java.math.BigDecimal;
 
 public interface ManagerIdProjection {
 
-    Double getManagerId();
+    Integer getManagerId();
 }

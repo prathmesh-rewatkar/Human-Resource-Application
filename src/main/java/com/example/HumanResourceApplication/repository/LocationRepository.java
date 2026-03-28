@@ -13,6 +13,6 @@ import java.util.List;
         path = "locations",
         excerptProjection = LocationProjection.class  // add this
 )
-public interface LocationRepository extends JpaRepository<Location , Double> {
+public interface LocationRepository extends JpaRepository<Location,Integer> {
 
 }

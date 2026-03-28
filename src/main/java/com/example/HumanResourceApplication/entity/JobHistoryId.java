@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class JobHistoryId implements Serializable {
 
-    @Column(name = "employee_id",columnDefinition = "DECIMAL(6,0)")
-    private Double employeeId;
+    @Column(name = "employee_id")
+    private Integer employeeId;
 
     @Column(name = "start_date")
     private LocalDate startDate;

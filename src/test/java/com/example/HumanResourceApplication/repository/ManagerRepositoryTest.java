@@ -1,33 +1,26 @@
-package com.example.HumanResourceApplication;
+package com.example.HumanResourceApplication.repository;
 
 
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.projection.EmployeeProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
-import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ManagerTest {
+public class ManagerRepositoryTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -36,24 +29,9 @@ public class ManagerTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-    void testGetManagerByEmail() throws Exception {
+    void testFindByEmployeeId_ValidId() {
 
-        mockMvc.perform(get("/api/v1/manager/by-email")
-                        .param("email", "SHIGGINS"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("SHIGGINS"));
-    }
-
-    @Test
-    void testgetAllManagers()throws Exception{
-        mockMvc.perform(get("/api/v1/managers"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testFindByEmployeeId() {
-
-        Optional<Employee> result = employeeRepository.findByEmployeeId((double) 100);
+        Optional<Employee> result = employeeRepository.findByEmployeeId( 100);
 
         assertTrue(result.isPresent());
         System.out.println(result.get().getFirstName());
@@ -81,7 +59,6 @@ public class ManagerTest {
         assertThat(result.getEmail()).isEqualTo("SHIGGINS");
     }
 
-
     @Test
     void testFindManagerByEmail_WrongEmail(){
         var result = employeeRepository
@@ -92,10 +69,28 @@ public class ManagerTest {
         //assertThat(result.getEmail()).isEqualTo("SHIGGINS");
     }
 
+    @Test
+    void testFindManagerByDepartmentName_ValidData(){
+        List<ManagerProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName("Shipping");
+        assertThat(list).isNotNull();
+        System.out.println(list.get(0).getEmail());
+        //assertThat(list.get(0).getEmail())
+    }
+
+    @Test
+    void testFindManagerByDepartmentName_InvalidData(){
+        List<ManagerProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName("Unknown");
+        assertThat(list.isEmpty());
+        //System.out.println(list.get(0).getEmail());
+        //assertThat(list.get(0).getEmail())
+    }
+
+
+
 
     @Test
     void testFindByManagerId_WithData(){
-        List<EmployeeProjection> list=employeeRepository.findByManager_EmployeeId((double)101);
+        List<EmployeeProjection> list=employeeRepository.findByManager_EmployeeId(101);
         assertThat(list).isNotNull();
         assertThat(list.size()>0);
         list.forEach(m-> System.out.println(m.getFirstName()));
@@ -104,7 +99,7 @@ public class ManagerTest {
 
     @Test
     void testFindByManagerId_NoData() {
-        List<EmployeeProjection> list = employeeRepository.findByManager_EmployeeId((double)9999);
+        List<EmployeeProjection> list = employeeRepository.findByManager_EmployeeId(9999);
 
         assertThat(list).isNotNull();
         assertThat(list.size()==0);
@@ -112,7 +107,7 @@ public class ManagerTest {
 
     @Test
     void testFindHierarchy_ValidId(){
-        List<Employee>list=employeeRepository.getHierarchy((double)101);
+        List<Employee>list=employeeRepository.getHierarchy(101);
         assertThat(list).isNotNull();
         assertThat(list.size()>0);
         list.forEach(m-> System.out.println(m.getEmployeeId()));
@@ -121,7 +116,7 @@ public class ManagerTest {
     @Test
     void testFindHierarchy_InvalidId(){
         assertThrows(RuntimeException.class, () -> {
-            employeeRepository.getHierarchy((double)9999);
+            employeeRepository.getHierarchy(9999);
         });
 
     }

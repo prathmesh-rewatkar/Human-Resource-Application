@@ -16,9 +16,9 @@ import java.util.List;
 public class Department
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "department_id", columnDefinition = "DECIMAL(4,0)")
-    private Double departmentId;
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "department_id")
+    private Integer departmentId;
 
     @Column(name = "department_name",length= 30, nullable = false)
     private String departmentName;
@@ -28,7 +28,7 @@ public class Department
     private List<Employee> employees;
 
     // ONE department → ONE manager (who is an Employee)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id")
     private Employee manager;
 
