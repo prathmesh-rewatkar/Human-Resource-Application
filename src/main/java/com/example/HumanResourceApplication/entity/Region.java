@@ -46,7 +46,7 @@ import java.util.List;
 public class Region {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "region_id", columnDefinition = "DECIMAL(10,0)")
     private Double regionId;
 
