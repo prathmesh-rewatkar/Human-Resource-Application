@@ -13,12 +13,33 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1")
+//@RequestMapping("/api/v1")
 public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
+
+    // @GetMapping("/managers")
+    // public List<ManagerProjection> getAllManagers() {
+
+    //     List<Long> ids = employeeRepository.findDistinctByManagerIdIsNotNull()
+    //             .stream()
+    //             .map(ManagerIdProjection::getManagerId)
+    //             .toList();
+
+    //     return employeeRepository.findByEmployeeIdIn(ids);
+    // }
+
+    
+
+
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Double id) {
+    return employeeRepository.findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
     @GetMapping("/managers")
     public List<ManagerProjection> getAllManagers() {
         List<ManagerProjection>managers= employeeRepository.findDistinctBySubordinatesIsNotEmpty();
@@ -68,4 +89,5 @@ public class EmployeeController {
         employeeRepository.save(employee);
         return ResponseEntity.ok("Manager updated successfully");
     }
+
 }

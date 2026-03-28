@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity
+@Entity 
 @Table(name = "countries")
 @Getter
 @Setter
