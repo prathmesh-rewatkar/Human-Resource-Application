@@ -20,7 +20,7 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id", columnDefinition = "DECIMAL(6,0)")
     private Double employeeId;
 

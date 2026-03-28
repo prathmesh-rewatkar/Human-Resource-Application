@@ -29,10 +29,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    //  Handles BOTH your custom + Spring Data REST's ResourceNotFoundException → 404
+    @ExceptionHandler(org.springframework.data.rest.webmvc.ResourceNotFoundException.class)
+    public ResponseEntity<?> handleSpringDataRestNotFound(org.springframework.data.rest.webmvc.ResourceNotFoundException ex) {
+        return new ResponseEntity<>(
+                Map.of("error", ex.getMessage()),
+                HttpStatus.NOT_FOUND  //  404
+        );
+    }
+
     // Runtime Exceptions (like "Employee not found")
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
-
         return new ResponseEntity<>(
                 Map.of("error", ex.getMessage()),
                 HttpStatus.BAD_REQUEST
@@ -42,7 +50,6 @@ public class GlobalExceptionHandler {
     // Generic Exception (Fallback)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGenericException(Exception ex) {
-
         return new ResponseEntity<>(
                 Map.of("error", "Something went wrong"),
                 HttpStatus.INTERNAL_SERVER_ERROR
@@ -50,12 +57,12 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException ex) {
+    @ExceptionHandler(com.example.HumanResourceApplication.exception.ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFound( com.example.HumanResourceApplication.exception.ResourceNotFoundException ex) {
 
         return new ResponseEntity<>(
                 Map.of("error", ex.getMessage()),
-                HttpStatus.NOT_FOUND
+                HttpStatus.NOT_FOUND // 404
         );
     }
 
