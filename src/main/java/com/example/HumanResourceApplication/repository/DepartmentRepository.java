@@ -15,6 +15,8 @@ import java.util.Optional;
         excerptProjection = DepartmentProjection.class)
 public interface DepartmentRepository extends JpaRepository<Department,Integer>
 {
+    Optional<Department> findByDepartmentNameIgnoreCase(String departmentName);
+
     // (Page 2) - Search/Filter by name
     List<Department> findByDepartmentName(@Param("name")String name);
 
