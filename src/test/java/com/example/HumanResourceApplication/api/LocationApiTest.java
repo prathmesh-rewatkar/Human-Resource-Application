@@ -1,5 +1,11 @@
 package com.example.HumanResourceApplication.api;
 
+import com.example.HumanResourceApplication.entity.Country;
+import com.example.HumanResourceApplication.entity.Location;
+import com.example.HumanResourceApplication.exception.ResourceNotFoundException;
+import com.example.HumanResourceApplication.repository.CountryRepository;
+import com.example.HumanResourceApplication.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +22,9 @@ public class LocationApiTest {
 
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    private LocationRepository locationRepository ;
+
 
     @Test
     public void testGetAllLocations() throws Exception {
@@ -25,7 +34,12 @@ public class LocationApiTest {
     }
 
     @Test
+    @Transactional
     public void testGetAllLocations_WhenEmpty() throws Exception {
+      locationRepository.deleteAll();
+
+
+
         mockMvc.perform(get("/locations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.locations").exists())
