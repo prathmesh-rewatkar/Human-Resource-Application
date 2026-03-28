@@ -24,9 +24,14 @@ public class LocationApiTest {
                 .andExpect(jsonPath("$._embedded.locations").isArray());
     }
 
-//    public void testGetAllLocationsIfNotFountEmpty() throws Exception{
-//
-//    }
+    @Test
+    public void testGetAllLocations_WhenEmpty() throws Exception {
+        mockMvc.perform(get("/locations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.locations").exists())
+                .andExpect(jsonPath("$._embedded.locations").isArray())
+                .andExpect(jsonPath("$._embedded.locations.length()").value(0));
+    }
 
 
 }
