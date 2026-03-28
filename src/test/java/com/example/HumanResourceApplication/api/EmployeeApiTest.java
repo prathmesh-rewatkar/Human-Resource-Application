@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -68,5 +69,53 @@ public class EmployeeApiTest {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._links").exists());
+    }
+
+    @Test
+    @DisplayName("API: Create employee valid")
+    void testCreateEmployee_Valid() throws Exception {
+
+        String json = """
+        {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john%s@gmail.com",
+          "phoneNumber": "9876543210",
+          "hireDate": "2024-01-01",
+          "salary": 5000,
+          "jobTitle": "Public Accountant",
+          "departmentName": "Administration"
+        }
+        """.formatted(System.currentTimeMillis());
+
+        mockMvc.perform(post("/employees")
+                        .contentType("application/json")
+                        .content(json))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("POST Employee - invalid data")
+    void testCreateEmployee_Invalid() throws Exception {
+
+        String json = """
+    {
+      "firstName": "",
+      "email": "wrong",
+      "salary": -100
+    }
+    """;
+
+        mockMvc.perform(post("/employees")
+                        .contentType("application/json")
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(
+                        result -> {
+                            String content = result.getResponse().getContentAsString();
+
+                            assert(content.contains("errors") || content.contains("message"));
+                        }
+                );
     }
 }

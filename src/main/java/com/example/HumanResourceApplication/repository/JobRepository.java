@@ -6,9 +6,12 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource(path = "jobs")
 public interface JobRepository extends JpaRepository<Job, String> {
+
+    Optional<Job> findByJobTitleIgnoreCase(String jobTitle);
 
     List<Job> findByJobTitle(String jobTitle); 
 
