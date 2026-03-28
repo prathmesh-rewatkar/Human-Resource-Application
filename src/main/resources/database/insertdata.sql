@@ -2225,3 +2225,93 @@ values (
 alter table departments
   add foreign key (manager_id)
   references employees (employee_id);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(101, STR_TO_DATE('21-09-2011','%d-%m-%Y'), STR_TO_DATE('20-09-2013','%d-%m-%Y'), 'AC_ACCOUNT', 110),
+(101, STR_TO_DATE('21-09-2013','%d-%m-%Y'), STR_TO_DATE('20-09-2015','%d-%m-%Y'), 'AC_MGR',     110);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(102, STR_TO_DATE('13-01-2007','%d-%m-%Y'), STR_TO_DATE('12-01-2011','%d-%m-%Y'), 'IT_PROG', 60);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(114, STR_TO_DATE('07-12-2006','%d-%m-%Y'), STR_TO_DATE('06-12-2009','%d-%m-%Y'), 'PU_CLERK', 30),
+(114, STR_TO_DATE('07-12-2009','%d-%m-%Y'), STR_TO_DATE('06-12-2012','%d-%m-%Y'), 'ST_MAN',   50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(122, STR_TO_DATE('01-05-2007','%d-%m-%Y'), STR_TO_DATE('30-04-2010','%d-%m-%Y'), 'ST_CLERK',  50),
+(122, STR_TO_DATE('01-05-2010','%d-%m-%Y'), STR_TO_DATE('30-04-2013','%d-%m-%Y'), 'SH_CLERK',  50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(176, STR_TO_DATE('24-03-2012','%d-%m-%Y'), STR_TO_DATE('23-03-2014','%d-%m-%Y'), 'MK_REP', 20),
+(176, STR_TO_DATE('24-03-2014','%d-%m-%Y'), STR_TO_DATE('23-03-2016','%d-%m-%Y'), 'SA_REP', 80);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(200, STR_TO_DATE('17-09-2009','%d-%m-%Y'), STR_TO_DATE('16-09-2013','%d-%m-%Y'), 'MK_REP', 20);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(201, STR_TO_DATE('17-02-2008','%d-%m-%Y'), STR_TO_DATE('16-02-2011','%d-%m-%Y'), 'MK_REP', 20),
+(201, STR_TO_DATE('17-02-2011','%d-%m-%Y'), STR_TO_DATE('16-02-2014','%d-%m-%Y'), 'SA_REP', 80);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(203, STR_TO_DATE('07-06-2008','%d-%m-%Y'), STR_TO_DATE('06-06-2012','%d-%m-%Y'), 'AD_ASST', 10);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(205, STR_TO_DATE('07-06-2005','%d-%m-%Y'), STR_TO_DATE('06-06-2009','%d-%m-%Y'), 'AC_ACCOUNT', 110),
+(205, STR_TO_DATE('07-06-2009','%d-%m-%Y'), STR_TO_DATE('06-06-2012','%d-%m-%Y'), 'FI_ACCOUNT', 100);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(103, STR_TO_DATE('03-01-2010','%d-%m-%Y'), STR_TO_DATE('02-01-2013','%d-%m-%Y'), 'ST_CLERK',  50),
+(103, STR_TO_DATE('03-01-2013','%d-%m-%Y'), STR_TO_DATE('02-01-2016','%d-%m-%Y'), 'SH_CLERK',  50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(108, STR_TO_DATE('17-08-2006','%d-%m-%Y'), STR_TO_DATE('16-08-2009','%d-%m-%Y'), 'FI_ACCOUNT', 100),
+(108, STR_TO_DATE('17-08-2009','%d-%m-%Y'), STR_TO_DATE('16-08-2012','%d-%m-%Y'), 'AC_MGR',     110);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(145, STR_TO_DATE('01-10-2008','%d-%m-%Y'), STR_TO_DATE('30-09-2011','%d-%m-%Y'), 'SA_REP', 80),
+(145, STR_TO_DATE('01-10-2011','%d-%m-%Y'), STR_TO_DATE('30-09-2014','%d-%m-%Y'), 'SA_REP', 80);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(146, STR_TO_DATE('05-01-2009','%d-%m-%Y'), STR_TO_DATE('04-01-2012','%d-%m-%Y'), 'MK_REP', 20),
+(146, STR_TO_DATE('05-01-2012','%d-%m-%Y'), STR_TO_DATE('04-01-2015','%d-%m-%Y'), 'SA_REP', 80);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(150, STR_TO_DATE('30-01-2009','%d-%m-%Y'), STR_TO_DATE('29-01-2012','%d-%m-%Y'), 'PU_CLERK', 30),
+(150, STR_TO_DATE('30-01-2012','%d-%m-%Y'), STR_TO_DATE('29-01-2015','%d-%m-%Y'), 'SH_CLERK', 50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(174, STR_TO_DATE('11-05-2010','%d-%m-%Y'), STR_TO_DATE('10-05-2014','%d-%m-%Y'), 'MK_REP', 20);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(184, STR_TO_DATE('27-01-2010','%d-%m-%Y'), STR_TO_DATE('26-01-2014','%d-%m-%Y'), 'ST_CLERK', 50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(192, STR_TO_DATE('04-02-2008','%d-%m-%Y'), STR_TO_DATE('03-02-2011','%d-%m-%Y'), 'ST_CLERK', 50),
+(192, STR_TO_DATE('04-02-2011','%d-%m-%Y'), STR_TO_DATE('03-02-2014','%d-%m-%Y'), 'PU_CLERK', 30);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(206, STR_TO_DATE('07-06-2006','%d-%m-%Y'), STR_TO_DATE('06-06-2009','%d-%m-%Y'), 'AD_ASST', 10),
+(206, STR_TO_DATE('07-06-2009','%d-%m-%Y'), STR_TO_DATE('06-06-2012','%d-%m-%Y'), 'FI_ACCOUNT', 100);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(120, STR_TO_DATE('18-07-2008','%d-%m-%Y'), STR_TO_DATE('17-07-2011','%d-%m-%Y'), 'ST_CLERK', 50),
+(120, STR_TO_DATE('18-07-2011','%d-%m-%Y'), STR_TO_DATE('17-07-2014','%d-%m-%Y'), 'SH_CLERK', 50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(121, STR_TO_DATE('10-04-2009','%d-%m-%Y'), STR_TO_DATE('09-04-2012','%d-%m-%Y'), 'SH_CLERK', 50),
+(121, STR_TO_DATE('10-04-2012','%d-%m-%Y'), STR_TO_DATE('09-04-2015','%d-%m-%Y'), 'ST_CLERK', 50);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(204, STR_TO_DATE('07-06-2006','%d-%m-%Y'), STR_TO_DATE('06-06-2009','%d-%m-%Y'), 'MK_REP', 20),
+(204, STR_TO_DATE('07-06-2009','%d-%m-%Y'), STR_TO_DATE('06-06-2012','%d-%m-%Y'), 'HR_REP', 40);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(202, STR_TO_DATE('17-08-2011','%d-%m-%Y'), STR_TO_DATE('16-08-2015','%d-%m-%Y'), 'AD_ASST', 10);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(156, STR_TO_DATE('30-01-2008','%d-%m-%Y'), STR_TO_DATE('29-01-2011','%d-%m-%Y'), 'SH_CLERK', 50),
+(156, STR_TO_DATE('30-01-2011','%d-%m-%Y'), STR_TO_DATE('29-01-2014','%d-%m-%Y'), 'MK_REP', 20);
+
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES
+(109, STR_TO_DATE('16-08-2006','%d-%m-%Y'), STR_TO_DATE('15-08-2009','%d-%m-%Y'), 'PU_CLERK', 30),
+(109, STR_TO_DATE('16-08-2009','%d-%m-%Y'), STR_TO_DATE('15-08-2012','%d-%m-%Y'), 'ST_CLERK', 50);
