@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -58,10 +59,8 @@ public class DepartmentApiTest
 
     // Search Department By Name
     @Test
-    void testGetDepartmentByName() throws Exception {
-
-//        repository.save(createDepartment("Finance"));
-
+    void testGetDepartmentByName() throws Exception
+    {
         mockMvc.perform(get("/department/search/findByDepartmentName")
                         .param("name", "Shipping"))
                 .andExpect(status().isOk())
@@ -99,7 +98,7 @@ public class DepartmentApiTest
     // Filter by location city (Page 2 filter)
     @Test
     void testFilterByLocationCity() throws Exception {
-        mockMvc.perform(get("/department/search/findByLocationCity")
+        mockMvc.perform(get("/department/search/findByLocation_City")
                         .param("city", "Seattle"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.departments").isArray());
@@ -140,7 +139,7 @@ public class DepartmentApiTest
                 .andExpect(jsonPath("$.city").exists());
     }
 
-    // ─── CRUD OPERATIONS ────────────────────────────────────────────
+    // ──────────────────────────── CRUD OPERATIONS ─────────────────────────────────
 
     // Add Department (POST)
     @Test
@@ -163,7 +162,6 @@ public class DepartmentApiTest
     void testUpdateDepartment() throws Exception {
         String json = """
                 {
-                  "departmentId": 20,
                   "departmentName": "Marketing Updated"
                 }
                 """;
@@ -199,15 +197,24 @@ public class DepartmentApiTest
                   "departmentName": "To Be Deleted"
                 }
                 """;
-        mockMvc.perform(post("/department")
+        String location = mockMvc.perform(post("/department")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getHeader("Location");  // auto-generated ID from Location header
 
-        // Now delete it
-//        mockMvc.perform(delete("/department/998"))
-//                .andExpect(status().isNoContent());
+        assertThat(location).isNotNull();
+
+        // Now delete it using returned location url
+        mockMvc.perform(delete(new java.net.URI(location)))
+                .andExpect(status().isNoContent());
     }
+
+    // When you pass location directly as a String, Java gets confused because the String version
+    // expects a URL template pattern like /department/{id}, not a full URL like http://localhost/department/28.
+    // Wrapping it in new java.net.URI(location) uses the correct overload and resolves the issue.
 
     // Count
     @Test
