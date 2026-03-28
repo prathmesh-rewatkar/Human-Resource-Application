@@ -1,98 +1,90 @@
-
-
-
-use HR;
+USE HR;
 
 DROP TABLE IF EXISTS regions;
-create table regions (
-  region_id decimal not null,
-  region_name varchar(25),
-  primary key (region_id)
+CREATE TABLE regions (
+  region_id INT NOT NULL AUTO_INCREMENT,
+  region_name VARCHAR(25),
+  PRIMARY KEY (region_id)
 );
 
 DROP TABLE IF EXISTS countries;
-create table countries (
-  country_id char(4) not null,
-  country_name varchar(60),
-  region_id decimal,
-  primary key (country_id),
-  foreign key (region_id)
-  references regions (region_id)
+CREATE TABLE countries (
+  country_id CHAR(4) NOT NULL,
+  country_name VARCHAR(60),
+  region_id INT,
+  PRIMARY KEY (country_id),
+  FOREIGN KEY (region_id)
+    REFERENCES regions (region_id)
 );
 
 DROP TABLE IF EXISTS locations;
-create table locations (
-  location_id decimal(4, 0) not null,
-  street_address varchar(40),
-  postal_code varchar(12),
-  city varchar(30) not null,
-  state_province varchar(25),
-  country_id char(4),
-  primary key (location_id),
-  foreign key (country_id)
-  references countries (country_id)
+CREATE TABLE locations (
+  location_id INT NOT NULL AUTO_INCREMENT,
+  street_address VARCHAR(40),
+  postal_code VARCHAR(12),
+  city VARCHAR(30) NOT NULL,
+  state_province VARCHAR(25),
+  country_id CHAR(4),
+  PRIMARY KEY (location_id),
+  FOREIGN KEY (country_id)
+    REFERENCES countries (country_id)
 );
 
 DROP TABLE IF EXISTS departments;
-create table departments (
-  department_id decimal(4, 0) not null,
-  department_name varchar(30) not null,
-  manager_id decimal(6, 0),
-  location_id decimal(4, 0),
-  primary key (department_id),
-  foreign key (location_id)
-  references locations (location_id)
+CREATE TABLE departments (
+  department_id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(30) NOT NULL,
+  manager_id INT,
+  location_id INT,
+  PRIMARY KEY (department_id),
+  FOREIGN KEY (location_id)
+    REFERENCES locations (location_id)
 );
 
 DROP TABLE IF EXISTS jobs;
-create table jobs (
-  job_id varchar(10) not null,
-  job_title varchar(35) not null,
-  min_salary decimal(6, 0),
-  max_salary decimal(6, 0),
-  primary key (job_id)
+CREATE TABLE jobs (
+  job_id VARCHAR(10) NOT NULL,
+  job_title VARCHAR(35) NOT NULL,
+  min_salary DECIMAL(6, 0),
+  max_salary DECIMAL(6, 0),
+  PRIMARY KEY (job_id)
 );
 
 DROP TABLE IF EXISTS employees;
-create table employees (
-  employee_id decimal(6, 0) not null,
-  first_name varchar(20),
-  last_name varchar(25) not null,
-  email varchar(25) not null,
-  phone_number varchar(20),
-  hire_date date not null,
-  job_id varchar(10) not null,
-  salary decimal(8, 2),
-  commission_pct decimal(2, 2),
-  manager_id decimal(6, 0),
-  department_id decimal(4, 0),
-  primary key (employee_id),
-  unique (email),
-  foreign key (job_id)
-  references jobs (job_id),
-  foreign key (manager_id)
-  references employees (employee_id),
-  foreign key (department_id)
-  references departments (department_id)
+CREATE TABLE employees (
+  employee_id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(20),
+  last_name VARCHAR(25) NOT NULL,
+  email VARCHAR(25) NOT NULL,
+  phone_number VARCHAR(20),
+  hire_date DATE NOT NULL,
+  job_id VARCHAR(10) NOT NULL,
+  salary DECIMAL(8, 2),
+  commission_pct DECIMAL(2, 2),
+  manager_id INT,
+  department_id INT,
+  PRIMARY KEY (employee_id),
+  UNIQUE (email),
+  FOREIGN KEY (job_id)
+    REFERENCES jobs (job_id),
+  FOREIGN KEY (manager_id)
+    REFERENCES employees (employee_id),
+  FOREIGN KEY (department_id)
+    REFERENCES departments (department_id)
 );
 
-
-  
-  DROP TABLE IF EXISTS job_history;
-  create table job_history (
-  employee_id decimal(6, 0) not null,
-  start_date date not null,
-  end_date date not null,
-  job_id varchar(10) not null,
-  department_id decimal(4, 0),
-  foreign key (employee_id)
-  references employees (employee_id),
-  foreign key (job_id)
-  references jobs (job_id),
-  foreign key (department_id)
-  references departments (department_id),
-  primary key (employee_id, start_date)
+DROP TABLE IF EXISTS job_history;
+CREATE TABLE job_history (
+  employee_id INT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  job_id VARCHAR(10) NOT NULL,
+  department_id INT,
+  FOREIGN KEY (employee_id)
+    REFERENCES employees (employee_id),
+  FOREIGN KEY (job_id)
+    REFERENCES jobs (job_id),
+  FOREIGN KEY (department_id)
+    REFERENCES departments (department_id),
+  PRIMARY KEY (employee_id, start_date)
 );
-
-
-

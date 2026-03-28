@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RepositoryRestResource(path = "department",collectionResourceRel = "departments",
         excerptProjection = DepartmentProjection.class)
-public interface DepartmentRepository extends JpaRepository<Department, Double>
+public interface DepartmentRepository extends JpaRepository<Department,Integer>
 {
     // (Page 2) - Search/Filter by name
     List<Department> findByDepartmentName(@Param("name")String name);
@@ -27,18 +27,18 @@ public interface DepartmentRepository extends JpaRepository<Department, Double>
 
     // (Page 3) - Find department with its employees
     @Query("SELECT d FROM Department d LEFT JOIN FETCH d.employees WHERE d.departmentId = :id")
-    Optional<Department> findByDepartmentIdWithEmployees(@Param("id")Double id);
+    Optional<Department> findByDepartmentIdWithEmployees(@Param("id")Integer id);
 
     // Exists and find
 //    Optional<Department> findByDepartmentId(Double departmentId);
 
-    Optional<Department> findByDepartmentId(Double id);
+    Optional<Department> findByDepartmentId(Integer id);
 
     // (Page 2) - Filter departments that have a manager assigned
     List<Department> findByManagerIsNotNull();
 
     // (Page 2) - Filter departments by location id
-    List<Department> findByLocation_LocationId(Double locationId);
+    List<Department> findByLocation_LocationId(Integer locationId);
 
     long count();
 }
