@@ -7,36 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "jobs")   
+@Table(name = "jobs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Job {
 
     @Id
-    @Column(name = "job_id")
+    @Column(name = "job_id", length = 10)
     private String jobId;
 
-    @Column(name = "job_title")
+    @Column(name = "job_title", length = 35)
     private String jobTitle;
 
-    @Column(name = "min_salary")
+    @Column(name = "min_salary", columnDefinition = "DECIMAL(6,0)")
     private Double minSalary;
 
-    @Column(name = "max_salary")
+    @Column(name = "max_salary", columnDefinition = "DECIMAL(6,0)")
     private Double maxSalary;
 
-    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY) 
-private List<Employee> employees = new ArrayList<>();
-
-    // @OneToMany(mappedBy = "job") 
-    // // private List<JobHistory> jobHistories;
-
-    //Custom constructor
-    public Job(String jobId, String jobTitle, Double minSalary, Double maxSalary) {
-        this.jobId = jobId;
-        this.jobTitle = jobTitle;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
-    }
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+    private List<Employee> employees = new ArrayList<>();
 }

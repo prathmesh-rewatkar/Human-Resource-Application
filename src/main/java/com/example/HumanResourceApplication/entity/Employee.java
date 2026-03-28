@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,12 +16,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "employee_id", columnDefinition = "DECIMAL(6,0)")
+    private Double employeeId;
+
+
 
     @Column(name = "first_name")
     private String firstName;
@@ -40,10 +44,10 @@ public class Employee {
 //    @Column(name = "job_id")
 //    private String jobId;
 
-    @Column(name = "salary")
+    @Column(name = "salary", columnDefinition = "DECIMAL(8,2)")
     private Double salary;
 
-    @Column(name = "commission_pct")
+    @Column(name = "commission_pct",columnDefinition = "DECIMAL(2,2)")
     private Double commissionPct;
 
 //    @Column(name = "manager_id")
@@ -56,18 +60,14 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name="manager_id")
     private Employee manager;
-//
-//
+
     @OneToMany(mappedBy = "manager" )
     private List<Employee> subordinates;
-//
-//
+
     @ManyToOne
     @JoinColumn(name="job_id")
     private Job job;
 
-//    @OneToMany(mappedBy = "employee")
-//    private List<JobHistory> jobHistories;
 
     @ManyToOne
     @JoinColumn(name="department_id")

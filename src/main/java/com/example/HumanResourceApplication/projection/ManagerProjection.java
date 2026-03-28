@@ -1,5 +1,8 @@
 package com.example.HumanResourceApplication.projection;
 
+import java.math.BigDecimal;
+import java.util.function.BiConsumer;
+
 public interface ManagerProjection {
 
     String getFirstName();
@@ -11,6 +14,6 @@ public interface ManagerProjection {
     Double getSalary();
 
     String getPhoneNumber();
-    Long getManagerId();
-    Long getDepartmentId();
+    String getDepartment_DepartmentName();
+
 }
