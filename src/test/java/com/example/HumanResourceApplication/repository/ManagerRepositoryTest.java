@@ -3,6 +3,7 @@ package com.example.HumanResourceApplication.repository;
 
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.projection.EmployeeProjection;
+import com.example.HumanResourceApplication.projection.EmployeeRecordProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class ManagerRepositoryTest {
 
     @Test
     void testFindByManagerId_WithData(){
-        List<EmployeeProjection> list=employeeRepository.findByManager_EmployeeId(101);
+        List<EmployeeRecordProjection> list=employeeRepository.findByManager_EmployeeId(101);
         assertThat(list).isNotNull();
         assertThat(list.size()>0);
         list.forEach(m-> System.out.println(m.getFirstName()));
@@ -99,7 +100,7 @@ public class ManagerRepositoryTest {
 
     @Test
     void testFindByManagerId_NoData() {
-        List<EmployeeProjection> list = employeeRepository.findByManager_EmployeeId(9999);
+        List<EmployeeRecordProjection> list = employeeRepository.findByManager_EmployeeId(9999);
 
         assertThat(list).isNotNull();
         assertThat(list.size()==0);
