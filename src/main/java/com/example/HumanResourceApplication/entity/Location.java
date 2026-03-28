@@ -16,7 +16,7 @@ import java.util.List;
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "location_id" ,columnDefinition = "DECIMAL(4,0)")
     private Double locationId;
 
