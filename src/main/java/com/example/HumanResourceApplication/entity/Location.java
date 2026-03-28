@@ -3,22 +3,31 @@ import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+
 import java.util.List;
 
 @Entity
 @Table(name = "locations")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    // @Column(name = "location_id" ,nullable = false )
+    // private Integer locationId;
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "location_id" ,columnDefinition = "DECIMAL(4,0)")
     private Double locationId;
+
 
     @Column(name = "street_address", length = 40)
     private String streetAddress;
@@ -32,9 +41,15 @@ public class Location {
     @Column(name = "state_province", length = 25)
     private String stateProvince;
 
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "country_id")
+    // private Country country ;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country ;
+
 
     @OneToMany(mappedBy = "location" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private List<Department> departments ;
