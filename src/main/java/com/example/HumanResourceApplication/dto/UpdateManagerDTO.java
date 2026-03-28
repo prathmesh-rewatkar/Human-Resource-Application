@@ -9,9 +9,9 @@ public class UpdateManagerDTO {
 
     @NotNull(message = "Employee ID cannot be null")
     @Positive(message = "Employee ID must be positive")
-    private Double employeeId;
+    private Integer employeeId;
 
     @NotNull(message = "New Manager ID cannot be null")
     @Positive(message = "New Manager ID must be positive")
-    private Double newManagerId;
+    private Integer newManagerId;
 }

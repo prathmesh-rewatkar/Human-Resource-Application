@@ -20,13 +20,9 @@ import java.util.List;
 public class Location {
 
     @Id
-
-    // @Column(name = "location_id" ,nullable = false )
-    // private Integer locationId;
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "location_id" ,columnDefinition = "DECIMAL(4,0)")
-    private Double locationId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "location_id")
+    private Integer locationId;
 
 
     @Column(name = "street_address", length = 40)
@@ -35,7 +31,7 @@ public class Location {
     @Column(name = "postal_code", length = 12)
     private String postalCode;
 
-    @Column(name = "city", length = 30)
+    @Column(name = "city",columnDefinition = "VARCHAR(30)")
     private String city;
 
     @Column(name = "state_province", length = 25)

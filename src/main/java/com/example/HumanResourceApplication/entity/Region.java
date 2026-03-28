@@ -1,6 +1,7 @@
 package com.example.HumanResourceApplication.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ public class Region {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "region_id", columnDefinition = "DECIMAL(10,0)")
-    private Double regionId;
+    @Column(name = "region_id")
+    private Integer regionId;
 
     @Column(name = "region_name", length = 25)
     private String regionName;
