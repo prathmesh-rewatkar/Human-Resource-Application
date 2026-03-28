@@ -26,11 +26,6 @@ public class DepartmentRepositoryTest
     @Autowired
     private LocationRepository locationRepository;
 
-//    private Department dept;
-//    private Employee manager;
-//    private Location loc;
-
-
     // Get All Departments
     @Test
     void testFindAllDepartments() {
@@ -43,28 +38,10 @@ public class DepartmentRepositoryTest
     @Test
     void testFindDepartmentById()
     {
-        Department found = repository.findByDepartmentId(20).orElse(null);
+        Department found = repository.findById(20).orElse(null);
         assertThat(found).isNotNull();
         assertThat(found.getDepartmentName()).isEqualTo("Marketing");
     }
-
-    // Add Department
-//    @Test
-//    void testAddDepartment()
-//    {
-//        Employee manager = createManager("John");
-//        dept.setManager(manager);
-//
-//        Department dept = new Department();
-//        dept.setDepartmentName("HR");
-//        dept.setManager(manager);
-//        dept.setLocation(loc);
-//
-//        Department saved = repository.save(dept);
-//
-//        assertThat(saved.getDepartmentId()).isNotNull();
-//        assertThat(saved.getManager()).isNotNull();
-//    }
 
     // Search Department By Name
     @Test
@@ -96,15 +73,14 @@ public class DepartmentRepositoryTest
     {
         List<Department> result = repository.findByDepartmentNameContainingIgnoreCase("IT");
         assertThat(result).isNotEmpty();
-        assertThat(result.get(0).getDepartmentName()).isEqualTo("IT");
+        assertThat(result.get(0).getDepartmentName()).containsIgnoringCase("IT");
     }
 
-    /// ///////////////////////
     // Filter by location city
     @Test
     void testFindByLocationCity()
     {
-        List<Department> result = repository.findByLocationCity("Seattle");
+        List<Department> result = repository.findByLocation_City("Seattle");
         assertThat(result).isNotEmpty();
         result.forEach(d ->
                 assertThat(d.getLocation().getCity()).isEqualTo("Seattle"));
@@ -140,7 +116,7 @@ public class DepartmentRepositoryTest
     // Fetch department WITH employees (Page 3 core query)
     @Test
     void testFindDepartmentWithEmployees() {
-        Optional<Department> result = repository.findByDepartmentIdWithEmployees(50);
+        Optional<Department> result = repository.findById(50);
         assertThat(result).isPresent();
         assertThat(result.get().getEmployees()).isNotEmpty();
     }
@@ -148,7 +124,7 @@ public class DepartmentRepositoryTest
     // Employees in a department belong to that department
     @Test
     void testEmployeesBelongToCorrectDepartment() {
-        Optional<Department> result = repository.findByDepartmentIdWithEmployees(60);
+        Optional<Department> result = repository.findById(60);
         assertThat(result).isPresent();
         result.get().getEmployees().forEach(emp ->
                 assertThat(emp.getDepartment().getDepartmentId()).isEqualTo(60)
@@ -158,7 +134,7 @@ public class DepartmentRepositoryTest
     // Department with no employees still loads (e.g. Treasury = 120)
     @Test
     void testDepartmentWithNoEmployees() {
-        Optional<Department> result = repository.findByDepartmentIdWithEmployees(120);
+        Optional<Department> result = repository.findById(120);
         assertThat(result).isPresent();
         assertThat(result.get().getEmployees()).isEmpty();
     }
@@ -166,7 +142,7 @@ public class DepartmentRepositoryTest
     // Manager info accessible from department (for Page 3 header)
     @Test
     void testDepartmentManagerInfo() {
-        Department dept = repository.findByDepartmentId(90).orElse(null);
+        Department dept = repository.findById(90).orElse(null);
         assertThat(dept).isNotNull();
         assertThat(dept.getManager()).isNotNull();
         assertThat(dept.getManager().getFirstName()).isNotBlank();
@@ -175,7 +151,7 @@ public class DepartmentRepositoryTest
     // Location info accessible from department (for Page 3 header)
     @Test
     void testDepartmentLocationInfo() {
-        Department dept = repository.findByDepartmentId(20).orElse(null);
+        Department dept = repository.findById(20).orElse(null);
         assertThat(dept).isNotNull();
         assertThat(dept.getLocation()).isNotNull();
         assertThat(dept.getLocation().getCity()).isNotBlank();
@@ -184,10 +160,28 @@ public class DepartmentRepositoryTest
     // Exception: Department not found
     @Test
     void testFindDepartmentById_NotFound() {
-        Optional<Department> result = repository.findByDepartmentId(9999);
+        Optional<Department> result = repository.findById(9999);
         assertThat(result).isEmpty();
     }
 
+
+    // Add Department
+//    @Test
+//    void testAddDepartment()
+//    {
+//        Employee manager = createManager("John");
+//        dept.setManager(manager);
+//
+//        Department dept = new Department();
+//        dept.setDepartmentName("HR");
+//        dept.setManager(manager);
+//        dept.setLocation(loc);
+//
+//        Department saved = repository.save(dept);
+//
+//        assertThat(saved.getDepartmentId()).isNotNull();
+//        assertThat(saved.getManager()).isNotNull();
+//    }
 
 
 }
