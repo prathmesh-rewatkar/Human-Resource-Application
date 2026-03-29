@@ -8,8 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -20,7 +20,6 @@ public class JobRepositoryTest {
     private JobRepository repository;
 
     
-
     @Test
     void testFindAllJobs() {
         var list = repository.findAll();
@@ -46,7 +45,7 @@ public class JobRepositoryTest {
     }
 
     @Test
-void testFindByMinSalaryGreaterThanEqual() {
+    void testFindByMinSalaryGreaterThanEqual() {
     var list = repository.findByMinSalaryGreaterThanEqual(new BigDecimal("4000"));
     assertThat(list).isNotEmpty();
 }
@@ -73,29 +72,35 @@ void testFindBySalaryRange() {
     }
 
 
+//PAGE 3
 
+@Test
+void testFindEmployeesByJobTitle() {
 
-//     @Test
-//     void testFindEmployeesByJobTitle()
-//     {
-//     var list = repository.findJobWithEmployeesByJobTitle("Programmer");
-    
-//     assertThat(list).isNotEmpty();
-    
-//     // Check job details
-//     Job job = list.get(0);
-//     assertThat(job.getJobTitle()).isEqualTo("Programmer");
-//     assertThat(job.getJobId()).isEqualTo("IT_PROG");
-    
-//     // Check employees list is not empty
-//     assertThat(job.getEmployees()).isNotNull();
-//     assertThat(job.getEmployees()).isNotEmpty();
-    
-//     // Print job and its employees
-//     System.out.println("Job: " + job.getJobTitle());
-//     System.out.println("Employees in this job:");
-//     job.getEmployees().forEach(emp -> 
-//         System.out.println(" - " + emp.getFirstName() + " " + emp.getLastName())
-//     );
-// }
+    var list = repository.findJobWithEmployeesByJobTitle("Programmer");
+
+    assertThat(list).isNotEmpty();
+
+    Job job = list.get(0);
+
+    // print job
+    System.out.println("Job: " + job.getJobTitle());
+
+    // print count
+    System.out.println("Total Employees: " + job.getEmployees().size());
+
+    // print employees (FIRST + LAST name + email)
+    job.getEmployees().forEach(emp ->
+        System.out.println(
+                emp.getFirstName() + " " +
+                emp.getLastName() + " - " +
+                emp.getEmail()
+        )
+);
+
+    // assertion
+    assertThat(job.getEmployees()).isNotEmpty();
+
+    assertThat(job.getEmployees()).allMatch(emp -> emp.getEmail() != null);
+}
 }
