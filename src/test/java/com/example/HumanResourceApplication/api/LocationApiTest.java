@@ -44,6 +44,7 @@ public class LocationApiTest {
     public void testUpdateLocation_PUT_Success() throws Exception {
         String requestBody = """
             {
+                
                 "streetAddress": "Updated Street 99",
                 "postalCode": "00989",
                 "city": "Roma",
@@ -114,8 +115,28 @@ public class LocationApiTest {
     @Test
     @Transactional
     public void testDeleteLocation_Success() throws Exception {
-        mockMvc.perform(delete("/locations/1000"))
-                .andExpect(status().isNoContent()); // 204
+
+        // 🔹 Step 1: Create location first
+//        String  =        {
+                String createBody = """
+{
+    "locationId": 1,
+    "streetAddress": "Test",
+    "postalCode": "12345",
+    "city": "TestCity",
+    "stateProvince": "TestState",
+    "country": "http://localhost/countries/IN"
+}
+""";
+
+        mockMvc.perform(post("/locations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createBody))
+                .andExpect(status().isCreated());
+
+        // 🔹 Step 2: Now delete (use returned ID ideally)
+        mockMvc.perform(delete("/locations/1"))
+                .andExpect(status().isNoContent());
     }
 
     // TEST: DELETE - delete non-existent location → 404
@@ -131,6 +152,7 @@ public class LocationApiTest {
     public void testAddLocation_Success() throws Exception {
         String requestBody = """
             {
+            
                 "streetAddress": "123 Test Street",
                 "postalCode": "411001",
                 "city": "Nagpur",
