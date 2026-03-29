@@ -19,13 +19,13 @@ import java.util.List;
 public class Region {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "region_id")
     private Integer regionId;
 
     @Column(name = "region_name", length = 25)
     private String regionName;
+    @OneToMany(mappedBy = "region")
+    private List<Country> countries ;
 
-//    @OneToMany(mappedBy = "region")
-//    private List<Location> locations;
+
 }

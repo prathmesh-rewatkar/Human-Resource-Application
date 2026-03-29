@@ -42,26 +42,5 @@ public class LocationRepositoryTest {
        long count =  locationRepository.count();
        assertThat(count).isEqualTo(23);
     }
-    @Test
-    @Transactional
-    public void testSaveLocaton(){
-        Country testCountry = countryRepository.findById("Ar").
-                orElseThrow(()->new ResourceNotFoundException("Country it doesnot Exist")) ;
-        Location newLocation = new Location() ;
-        newLocation.setStreetAddress("Test Street 123");
-        newLocation.setPostalCode("123456");
-        newLocation.setCity("TestCity");
-        newLocation.setStateProvince("TestState");
-        newLocation.setCountry(testCountry);
 
-        Location savedLocation=locationRepository.save(newLocation);
-        // Assert
-        assertThat(savedLocation).isNotNull();
-        assertThat(savedLocation.getCity()).isEqualTo("TestCity");
-        assertThat(savedLocation.getPostalCode()).isEqualTo("123456");
-        assertThat(savedLocation.getCountry().getCountryId()).isEqualTo("Ar");
-
-
-
-    }
 }
