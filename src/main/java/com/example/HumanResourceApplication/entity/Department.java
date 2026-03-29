@@ -1,5 +1,6 @@
 package com.example.HumanResourceApplication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Department
     private String departmentName;
 
     //  ONE department → MANY employees
+    @JsonIgnore
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private List<Employee> employees;
 
