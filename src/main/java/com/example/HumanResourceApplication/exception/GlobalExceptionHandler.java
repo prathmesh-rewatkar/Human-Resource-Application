@@ -114,4 +114,12 @@ public class GlobalExceptionHandler {
                 .body("Invalid ID format. Please provide a numeric value.");
     }
 
+    // duplicate error status code
+    @ExceptionHandler(DuplicateEntityException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicate(DuplicateEntityException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)      // ← 409
+                .body(Map.of("error", ex.getMessage()));
+    }
+
 }

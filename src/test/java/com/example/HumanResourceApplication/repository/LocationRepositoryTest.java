@@ -43,7 +43,7 @@ public class LocationRepositoryTest {
     @Test
     @Transactional
     public void testSaveLocaton(){
-        Country testCountry = countryRepository.findById("Ar").
+        Country testCountry = countryRepository.findById("AR").
                 orElseThrow(()->new ResourceNotFoundException("Country it doesnot Exist")) ;
         Location newLocation = new Location() ;
         newLocation.setStreetAddress("Test Street 123");
@@ -57,7 +57,7 @@ public class LocationRepositoryTest {
         assertThat(savedLocation).isNotNull();
         assertThat(savedLocation.getCity()).isEqualTo("TestCity");
         assertThat(savedLocation.getPostalCode()).isEqualTo("123456");
-        assertThat(savedLocation.getCountry().getCountryId()).isEqualTo("Ar");
+        assertThat(savedLocation.getCountry().getCountryId()).isEqualTo("AR");
 
 
 
