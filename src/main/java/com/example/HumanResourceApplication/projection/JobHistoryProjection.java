@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Projection(name = "jobHistoryView", types = JobHistory.class)
 public interface JobHistoryProjection {
 
-    @Value("#{target.employee.firstName + ' ' + target.employee.lastName}")
+    @Value("#{target.employee != null ? target.employee.firstName + ' ' + target.employee.lastName : '—'}")
     String getEmployeeName();
 
     @Value("#{target.id.startDate}")
@@ -20,6 +20,6 @@ public interface JobHistoryProjection {
     @Value("#{target.job.jobTitle}")
     String getJobTitle();
 
-    @Value("#{target.department.departmentName}")
+    @Value("#{target.department != null ? target.department.departmentName : '—'}")
     String getDepartmentName();
 }

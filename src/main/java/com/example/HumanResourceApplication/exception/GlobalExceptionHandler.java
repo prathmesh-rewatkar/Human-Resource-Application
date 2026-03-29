@@ -14,9 +14,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
-
-
     // 1. Validation Errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
@@ -109,7 +106,6 @@ public class GlobalExceptionHandler {
         ), HttpStatus.BAD_REQUEST);
     }
 
-
     //7.Invalid Input in URL
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
@@ -117,6 +113,5 @@ public class GlobalExceptionHandler {
                 .badRequest()
                 .body("Invalid ID format. Please provide a numeric value.");
     }
-
 
 }
