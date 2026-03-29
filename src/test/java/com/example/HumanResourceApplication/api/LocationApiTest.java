@@ -48,6 +48,7 @@ public class LocationApiTest {
 
     // PUT = UPSERT → creates new
     @Test
+    @Transactional
     public void testUpdateLocation_PUT_NotFound() throws Exception {
         String requestBody = """
             {
@@ -62,7 +63,7 @@ public class LocationApiTest {
         mockMvc.perform(put("/locations/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isCreated()); // ✅ correct
+                .andExpect(status().isCreated()); //
     }
 
     // ================= PATCH =================
@@ -82,7 +83,7 @@ public class LocationApiTest {
                 .andExpect(status().isNoContent());
     }
 
-    // ✅ NOW RETURNS 404 (your current backend behavior)
+    //  NOW RETURNS 404 (your current backend behavior)
     @Test
     public void testUpdateLocation_PATCH_NotFound() throws Exception {
         String requestBody = """
@@ -94,7 +95,7 @@ public class LocationApiTest {
         mockMvc.perform(patch("/locations/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isNoContent()); // ✅ FIXED
+                .andExpect(status().isNotFound());
     }
 
     // ================= DELETE =================
@@ -124,9 +125,10 @@ public class LocationApiTest {
 
     // ✅ NOW RETURNS 404 (your backend behavior)
     @Test
+    @Transactional
     public void testDeleteLocation_NotFound() throws Exception {
         mockMvc.perform(delete("/locations/9999"))
-                .andExpect(status().isNoContent()); // ✅ FIXED
+                .andExpect(status().isNotFound());
     }
 
     // ================= POST =================

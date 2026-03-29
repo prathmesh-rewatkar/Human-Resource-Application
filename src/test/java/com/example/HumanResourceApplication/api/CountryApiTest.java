@@ -78,6 +78,7 @@ public class CountryApiTest {
 
     //  PUT non-existing → 201 (CREATES NEW)
     @Test
+    @Transactional
     public void testUpdateCountry_PUT_NotFound() throws Exception {
         String requestBody = """
             {
@@ -90,7 +91,7 @@ public class CountryApiTest {
         mockMvc.perform(put("/countries/ZZ2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isNoContent()); // ✅ FIX
+                .andExpect(status().isCreated());
     }
 
     //  PATCH existing → 204
@@ -111,6 +112,7 @@ public class CountryApiTest {
 
     // PATCH non-existing → 404
     @Test
+    @Transactional
     public void testUpdateCountry_PATCH_NotFound() throws Exception {
         String requestBody = """
             {
@@ -121,7 +123,7 @@ public class CountryApiTest {
         mockMvc.perform(patch("/countries/ZZ3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isNotFound()); // ✅ FIX
+                .andExpect(status().isNotFound());
     }
 
     //  DELETE existing → 204
@@ -134,8 +136,9 @@ public class CountryApiTest {
 
     //  DELETE non-existing → 404
     @Test
+    @Transactional
     public void testDeleteCountry_NotFound() throws Exception {
         mockMvc.perform(delete("/countries/ZZ4"))
-                .andExpect(status().isNotFound()); // ✅ correct
+                .andExpect(status().isNotFound());
     }
 }
