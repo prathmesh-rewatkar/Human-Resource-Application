@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 @Transactional
 public class DepartmentApiTest
 {
@@ -147,7 +150,9 @@ public class DepartmentApiTest
     void testCreateDepartment() throws Exception {
         String json = """
                 {
-                  "departmentName": "Test Department"
+                  "departmentName": "Test Department",
+                    "location": "http://localhost/locations/1700",
+                    "manager": "http://localhost/employees/100"
                 }
                 """;
         mockMvc.perform(post("/department")
@@ -168,6 +173,7 @@ public class DepartmentApiTest
         mockMvc.perform(put("/department/20")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
+                .andDo(print())
                 .andExpect(status().isNoContent()); //204
     }
 
@@ -184,6 +190,34 @@ public class DepartmentApiTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isNoContent()); //204
+    }
+
+    // Partial Update — only location (PATCH)
+    @Test
+    void testPatchDepartmentLocation() throws Exception {
+        String json = """
+            {
+              "location": "http://localhost/locations/1700"
+            }
+            """;
+        mockMvc.perform(patch("/department/20")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNoContent());
+    }
+
+    // Partial Update — only manager (PATCH)
+    @Test
+    void testPatchDepartmentManager() throws Exception {
+        String json = """
+            {
+              "manager": "http://localhost/employees/201"
+            }
+            """;
+        mockMvc.perform(patch("/department/20")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNoContent());
     }
 
     // Delete Department
