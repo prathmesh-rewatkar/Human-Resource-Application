@@ -1,7 +1,5 @@
 package com.example.HumanResourceApplication.projection;
 
-
-
 import com.example.HumanResourceApplication.entity.Country;
 import com.example.HumanResourceApplication.entity.Region;
 import org.springframework.data.rest.core.config.Projection;

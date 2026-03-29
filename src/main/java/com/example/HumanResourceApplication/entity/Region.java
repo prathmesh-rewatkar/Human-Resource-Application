@@ -1,13 +1,10 @@
 package com.example.HumanResourceApplication.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -26,6 +23,5 @@ public class Region {
     private String regionName;
     @OneToMany(mappedBy = "region")
     private List<Country> countries ;
-
 
 }
