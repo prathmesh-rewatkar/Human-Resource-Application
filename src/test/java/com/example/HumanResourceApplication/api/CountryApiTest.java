@@ -58,7 +58,24 @@ public class CountryApiTest {
                 .andExpect(status().isConflict());
     }
 
-    // ======================================= CRUD ======================================
+    // TEST: Add country with non-existing region → should fail
+    @Test
+    @Transactional
+    public void testAddCountry_WithNonExistingRegion_Fails() throws Exception {
+        String requestBody = """
+            {
+                "countryId": "ZZ",
+                "countryName": "Test Country",
+                "region": "http://localhost/regions/9999"
+            }
+            """;
+
+        mockMvc.perform(post("/countries")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is4xxClientError());
+    }
+    // ======================================= RUD ======================================
 
     // PUT existing → 204
     @Test
@@ -86,7 +103,7 @@ public class CountryApiTest {
             {
                 "countryId": "ZZ2",
                 "countryName": "Ghost Country",
-                "region": "http://localhost/regions/1"
+                "region": "http://localhost/regions/10"
             }
             """;
 
