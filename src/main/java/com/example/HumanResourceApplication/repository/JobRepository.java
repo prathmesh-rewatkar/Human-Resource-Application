@@ -22,11 +22,11 @@ public interface JobRepository extends JpaRepository<Job, String> {
     List<Job> findByJobTitleContainingIgnoreCase(String jobTitle);
 
     List<Job> findByMinSalaryGreaterThanEqual(BigDecimal minSalary);
+
     List<Job> findByMaxSalaryLessThanEqual(BigDecimal maxSalary);
+    
     List<Job> findByMinSalaryBetween(BigDecimal min, BigDecimal max);
 
-    @Query("SELECT DISTINCT j FROM Job j JOIN FETCH j.employees WHERE j.jobTitle = :jobTitle")
-    List<Job> findJobWithEmployeesByJobTitle(@Param("jobTitle") String jobTitle);
 
 }
 
