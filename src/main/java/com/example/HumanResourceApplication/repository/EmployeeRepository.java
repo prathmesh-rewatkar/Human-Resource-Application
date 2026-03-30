@@ -21,13 +21,21 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Optional<Employee> findByEmployeeId(Integer empId);
 
+    List<Employee> findByFirstNameAndLastName(String firstName, String lastName);
+
+    Optional<Employee> findByEmail(String email);
+
+    Optional<Employee> findByPhoneNumber(String phoneNumber);
+
+    List<Employee> findByJob_JobTitle(String jobTitle);
+
+    List<Employee> findByDepartment_DepartmentName(String departmentName);
+
     List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty();
 
     //List<EmployeeProjection>findByManagerId(Long Id);
 
     List<EmployeeRecordProjection> findByManager_EmployeeId(Integer id);
-
-
 
     @RestResource(path = "by-email", rel = "managerByEmail")
     ManagerProjection findDistinctBySubordinatesIsNotEmptyAndEmail(String email);
