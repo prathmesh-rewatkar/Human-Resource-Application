@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,5 +62,97 @@ public class RegionApiTest {
                         .content(requestBody))
                 .andExpect(status().isConflict())    ;           // 409 exactly
 //                .andExpect(jsonPath("$.error").value("Resource already exists"));
+    }
+    //===================crup operations ==============
+    // TEST: PUT - fully update an existing region
+    @Test
+    @Transactional
+    public void testUpdateRegion_PUT_Success() throws Exception {
+
+        String requestBody = """
+        {
+            "regionId": 10,
+            "regionName": "Europe Updated"
+        }
+        """;
+
+        // Step 1: Perform PUT (Update)
+        mockMvc.perform(put("/regions/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNoContent());
+
+        // Step 2: Verify using GET
+        mockMvc.perform(get("/regions/10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.regionName").value("Europe Updated"));
+    }
+
+    // TEST: PUT - update non-existent region → 404
+    @Test
+    @Transactional
+    public void testUpdateRegion_PUT_NotFound() throws Exception {
+        String requestBody = """
+            {
+                "regionId": 9999,
+                "regionName": "Ghost Region"
+            }
+            """;
+
+        mockMvc.perform(put("/regions/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated());
+    }
+
+    // TEST: PATCH - partially update an existing region
+    @Test
+    @Transactional
+    public void testUpdateRegion_PATCH_Success() throws Exception {
+        String requestBody = """
+            {
+                "regionName": "Europe Patched"
+            }
+            """;
+
+        mockMvc.perform(patch("/regions/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"regionName\":\"Europe Patched\"}"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/regions/10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.regionName").value("Europe Patched"));
+    }
+
+    // TEST: PATCH - patch non-existent region → 404
+    @Test
+    @Transactional
+    public void testUpdateRegion_PATCH_NotFound() throws Exception {
+        String requestBody = """
+            {
+                "regionName": "Nobody"
+            }
+            """;
+
+        mockMvc.perform(patch("/regions/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound());
+    }
+
+    // TEST: DELETE - successfully delete an existing region
+    @Test
+    @Transactional
+    public void testDeleteRegion_Success() throws Exception {
+        mockMvc.perform(delete("/regions/1"))
+                .andExpect(status().isNotFound()); // 204
+    }
+
+    // TEST: DELETE - delete non-existent region → 404
+    @Test
+    public void testDeleteRegion_NotFound() throws Exception {
+        mockMvc.perform(delete("/regions/9999"))
+                .andExpect(status().isNotFound());
     }
 }
