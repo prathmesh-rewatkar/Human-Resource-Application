@@ -1,5 +1,8 @@
 package com.example.HumanResourceApplication.projection;
 
 public interface ManagerIdProjection {
-    Integer getManagerId();
+    Integer getEmployeeId();
+    String getFirstName();
+    String getLastName();
+
 }

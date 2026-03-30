@@ -4,12 +4,16 @@ import com.example.HumanResourceApplication.dto.UpdateManagerDTO;
 import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.exception.ResourceNotFoundException;
 import com.example.HumanResourceApplication.projection.EmployeeRecordProjection;
+import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
+import com.example.HumanResourceApplication.repository.DepartmentRepository;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -19,9 +23,15 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+
+
     @GetMapping("/managers")
-    public List<ManagerProjection> getAllManagers() {
-        List<ManagerProjection>managers= employeeRepository.findDistinctBySubordinatesIsNotEmpty();
+    public List<ManagerProjection> getAllManagers( @PageableDefault(size = 5, sort = "employeeId")Pageable pageable) {
+        List<ManagerProjection>managers= employeeRepository.findDistinctBySubordinatesIsNotEmpty(pageable);
         if (managers.isEmpty()) {
             throw new ResourceNotFoundException("No managers found");
         }
@@ -37,6 +47,7 @@ public class EmployeeController {
 
         return employeeRepository.findByManager_EmployeeId(id);
     }
+
 
     @DeleteMapping("/deleteManager/{id}")
     public ResponseEntity<?>deleteManager(@PathVariable Integer id){
@@ -62,15 +73,30 @@ public class EmployeeController {
     }
 
     @GetMapping("/manager/by-department")
-    public List<ManagerProjection> getManagerByDepartment(@RequestParam String departmentName) {
+    public List<ManagerIdProjection> getManagerByDepartment(@RequestParam Integer departmentId) {
+
+        if (!departmentRepository.existsById(departmentId)) {
+            throw new ResourceNotFoundException("Department not found");
+        }
         return employeeRepository
-                .findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName(departmentName);
+                .findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(departmentId);
     }
+
+
+    @GetMapping("/manager/by-firstname")
+    public List<ManagerProjection> getManagersByFirstName(@RequestParam String firstname){
+        return employeeRepository.findByFirstNameContainingIgnoreCase(firstname);
+    }
+
+    @GetMapping("/manager/by-lastname")
+    public List<ManagerProjection> getManagersByLastName(@RequestParam String lastname){
+        return employeeRepository.findByLastNameContainingIgnoreCase(lastname);
+    }
+
 
 
     @PutMapping("/update-manager")
     public ResponseEntity<?> updateManager(@RequestBody UpdateManagerDTO dto) {
-
 
         Employee employee = employeeRepository.findByEmployeeId(dto.getEmployeeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
@@ -79,13 +105,13 @@ public class EmployeeController {
                 .orElseThrow(() -> new ResourceNotFoundException("New Manager not found"));
 
         if (employee.getEmployeeId().equals(newManager.getEmployeeId())) {
-            throw  new ResourceNotFoundException("Employee cannot be their own manager");
+            throw  new IllegalArgumentException("Employee cannot be their own manager");
         }
 
         if (employeeRepository.getHierarchy(newManager.getEmployeeId())
                 .stream()
                 .anyMatch(e -> e.getEmployeeId().equals(employee.getEmployeeId()))) {
-            throw new ResourceNotFoundException("Circular hierarchy detected");
+            throw new IllegalArgumentException("Circular hierarchy detected");
         }
 
 
@@ -94,4 +120,6 @@ public class EmployeeController {
         employeeRepository.save(employee);
         return ResponseEntity.ok("Manager updated successfully");
     }
+
+
 }
