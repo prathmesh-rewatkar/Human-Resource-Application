@@ -72,4 +72,7 @@ public class Employee {
 
     @Transient
     private String departmentName;
+
+    @Transient
+    private Integer managerId;
 }
