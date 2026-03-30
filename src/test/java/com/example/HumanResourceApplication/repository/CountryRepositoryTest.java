@@ -15,6 +15,10 @@ public class CountryRepositoryTest {
 
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private LocationRepository locationRepository ;
+
+
 
     // TEST 1: Find country by name → get its ID
     @Test
@@ -48,5 +52,11 @@ public class CountryRepositoryTest {
         Country country = countryRepository.findById("ZZ").orElse(null);
 
         assertThat(country).isNull();
+    }
+    // TEST: Count locations per country
+    @Test
+    public void testCountLocationsByCountry() {
+        long count = locationRepository.countByCountry_CountryId("US");
+        assertThat(count).isEqualTo(4); // US has 4 locations in Oracle HR
     }
 }

@@ -1,6 +1,7 @@
 package com.example.HumanResourceApplication.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Country {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="region_id")
+    @NotNull(message = "Region is required")  //
     private Region region;
 
 //    @OneToMany(mappedBy = "location" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)

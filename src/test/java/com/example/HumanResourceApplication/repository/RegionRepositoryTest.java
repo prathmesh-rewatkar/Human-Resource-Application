@@ -16,6 +16,9 @@ public class RegionRepositoryTest {
     @Autowired
     private RegionRepository regionRepository;
 
+    @Autowired
+    private LocationRepository locationRepository ;
+
     // TEST 1: Find region by name → get its ID
     @Test
     public void testFindByRegionName_ReturnsCorrectId() {
@@ -48,5 +51,12 @@ public class RegionRepositoryTest {
         Region region = regionRepository.findById(9999).orElse(null);
 
         assertThat(region).isNull();
+    }
+
+    // TEST: Count locations per region
+    @Test
+    public void testCountLocationsByRegion() {
+        long count = locationRepository.countByCountry_Region_RegionId(20); // Americas
+        assertThat(count).isEqualTo(2); // Americas has 5 locations in Oracle HR
     }
 }

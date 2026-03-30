@@ -15,4 +15,7 @@ import java.util.List;
 )
 public interface LocationRepository extends JpaRepository<Location,Integer> {
 
+    long countByCountry_CountryId(String us);
+
+    long countByCountry_Region_RegionId(int i);
 }
