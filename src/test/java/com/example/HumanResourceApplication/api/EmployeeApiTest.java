@@ -69,7 +69,9 @@ public class EmployeeApiTest {
           "hireDate": "2024-01-01",
           "salary": 5000,
           "jobTitle": "Public Accountant",
-          "departmentName": "Administration"
+          "departmentName": "Administration",
+          "managerId":108,
+          "commissionPct":0.4
         }
         """.formatted(System.currentTimeMillis());
 

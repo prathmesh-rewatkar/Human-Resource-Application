@@ -93,7 +93,7 @@ void testFindBySalaryRange() {
         assertThat(employee.getFirstName()).isNotNull();
         assertThat(employee.getLastName()).isNotNull();
         assertThat(employee.getEmail()).isNotNull();
-        assertThat(employee.getJob().getJobTitle()).isNotNull();
-        assertThat(employee.getDepartment().getDepartmentName()).isNotNull();
+        assertThat(employee.getJobTitle()).isNotNull();
+        assertThat(employee.getDepartmentName()).isNotNull();
     }
 }

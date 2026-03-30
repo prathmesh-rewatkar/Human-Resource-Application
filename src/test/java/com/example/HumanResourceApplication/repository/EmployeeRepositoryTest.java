@@ -275,6 +275,7 @@ public class EmployeeRepositoryTest {
         emp.setSalary(99999999.0);
         emp.setJob(job);
         emp.setDepartment(dept);
+        emp.setManagerId(108);
 
         assertThatThrownBy(() -> employeeRepository.saveAndFlush(emp))
                 .isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);

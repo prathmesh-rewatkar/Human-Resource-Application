@@ -16,6 +16,9 @@ public class EmployeeEventHandler {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @HandleBeforeCreate
     @HandleBeforeSave
     public void handle(Employee employee) {
@@ -33,6 +36,14 @@ public class EmployeeEventHandler {
                     .orElseThrow(() -> new RuntimeException("Invalid department"));
 
             employee.setDepartment(dept);
+        }
+
+        if (employee.getManagerId() != null) {
+
+            Employee manager = employeeRepository.findById(employee.getManagerId())
+                    .orElseThrow(() -> new RuntimeException("Manager not found"));
+
+            employee.setManager(manager);
         }
     }
 }
