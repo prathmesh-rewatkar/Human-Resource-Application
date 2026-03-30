@@ -30,7 +30,7 @@ public class ManagerApiTest {
 
     @Test
     void test_getAllManagers() throws Exception {
-        mockMvc.perform(get("/api/v1/managers"))
+        mockMvc.perform(get("/api/v1/managers?page=0&size=5"))
                 .andExpect(status().isOk());
     }
 
@@ -94,7 +94,7 @@ public class ManagerApiTest {
     @Test
     void testgetAllManagersByDepartment() throws Exception {
         mockMvc.perform(get("/api/v1/manager/by-department")
-                        .param("departmentName", "Shipping"))
+                        .param("departmentId", "20"))
                 .andExpect(status().isOk());
     }
 
@@ -166,7 +166,7 @@ public class ManagerApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Employee cannot be their own manager"));
     }
 
@@ -184,7 +184,31 @@ public class ManagerApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Circular hierarchy detected"));
+    }
+
+    @Test
+    void testGetManagersByDepartment_InvalidDepartment() throws Exception {
+
+        mockMvc.perform(get("/api/v1/manager/by-department")
+                        .param("departmentId", "999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetManagersByDepartment_ValidDepartment() throws Exception {
+
+        mockMvc.perform(get("/api/v1/manager/by-department")
+                        .param("departmentId", "10"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetManagersByDepartment_NoManagerDepartment() throws Exception {
+
+        mockMvc.perform(get("/api/v1/manager/by-department")
+                        .param("departmentId", "120"))
+                .andExpect(status().isOk());
     }
 }

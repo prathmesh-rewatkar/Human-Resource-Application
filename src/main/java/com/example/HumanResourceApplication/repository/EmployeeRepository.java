@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     List<Employee> findByDepartment_DepartmentName(String departmentName);
 
-    List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty();
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty(Pageable pageable);
 
     //List<EmployeeProjection>findByManagerId(Long Id);
 
@@ -55,7 +56,17 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     }
 
     @RestResource(path = "by-department", rel = "managersByDepartment")
-    List<ManagerProjection> findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentName(String departmentName);
+    List<ManagerIdProjection> findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(Integer departmentId);
 
     long countByManager_EmployeeId(Integer managerId);
+
+
+
+    List<ManagerProjection> findByFirstNameContainingIgnoreCase(
+            String firstName
+    );
+
+    List<ManagerProjection> findByLastNameContainingIgnoreCase(
+            String LastName
+    );
 }
