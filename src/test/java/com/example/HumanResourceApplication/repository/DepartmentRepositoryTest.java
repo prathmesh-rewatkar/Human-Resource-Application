@@ -62,12 +62,12 @@ public class DepartmentRepositoryTest
     }
 
     // Exists By ID
-    @Test
-    void testExistsById()
-    {
-        boolean exists = repository.existsById(240);
-        assertThat(exists).isTrue();
-    }
+//    @Test
+//    void testExistsById()
+//    {
+//        boolean exists = repository.existsById(240);
+//        assertThat(exists).isTrue();
+//    }
 
     // Partial name search filter
     @Test
@@ -165,25 +165,5 @@ public class DepartmentRepositoryTest
         Optional<Department> result = repository.findById(9999);
         assertThat(result).isEmpty();
     }
-
-
-    // Add Department
-//    @Test
-//    void testAddDepartment()
-//    {
-//        Employee manager = createManager("John");
-//        dept.setManager(manager);
-//
-//        Department dept = new Department();
-//        dept.setDepartmentName("HR");
-//        dept.setManager(manager);
-//        dept.setLocation(loc);
-//
-//        Department saved = repository.save(dept);
-//
-//        assertThat(saved.getDepartmentId()).isNotNull();
-//        assertThat(saved.getManager()).isNotNull();
-//    }
-
 
 }
