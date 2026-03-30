@@ -81,22 +81,22 @@ public class DepartmentApiTest
     }
 
     // Search by exact name (Page 2 filter)
-//    @Test
-//    void testSearchByExactName() throws Exception {
-//        mockMvc.perform(get("/department/search/findByDepartmentName")
-//                        .param("name", "Shipping"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$._embedded.departments[0].departmentName").value("Shipping"));
-//    }
+//     @Test
+//     void testSearchByExactName() throws Exception {
+//         mockMvc.perform(get("/department/search/findByDepartmentName")
+//                         .param("name", "Shipping"))
+//                 .andExpect(status().isOk())
+//                 .andExpect(jsonPath("$._embedded.departments[0].departmentName").value("Shipping"));
+//     }
 
-    // Search by partial name (Page 2 filter)
-//    @Test
-//    void testSearchByPartialName() throws Exception {
-//        mockMvc.perform(get("/department/search/findByDepartmentNameContainingIgnoreCase")
-//                        .param("name", "sales"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$._embedded.departments").isArray());
-//    }
+//     // Search by partial name (Page 2 filter)
+//     @Test
+//     void testSearchByPartialName() throws Exception {
+//         mockMvc.perform(get("/department/search/findByDepartmentNameContainingIgnoreCase")
+//                         .param("name", "sales"))
+//                 .andExpect(status().isOk())
+//                 .andExpect(jsonPath("$._embedded.departments").isArray());
+//     }
 
     // Filter by location city (Page 2 filter)
     @Test

@@ -2,6 +2,7 @@ package com.example.HumanResourceApplication.projection;
 
 public interface ManagerProjection {
     Integer getEmployeeId();
+    
     String getFirstName();
 
     String getLastName();

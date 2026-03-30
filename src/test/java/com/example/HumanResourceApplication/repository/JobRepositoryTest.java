@@ -1,6 +1,9 @@
 package com.example.HumanResourceApplication.repository;
 
+import com.example.HumanResourceApplication.entity.Employee;
 import com.example.HumanResourceApplication.entity.Job;
+import com.example.HumanResourceApplication.projection.EmployeeProjection;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -8,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -19,6 +24,8 @@ public class JobRepositoryTest {
     @Autowired
     private JobRepository repository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
     
     @Test
     void testFindAllJobs() {
@@ -40,7 +47,7 @@ public class JobRepositoryTest {
 
     @Test
     void testFindByJobTitle() {
-        var list = repository.findByJobTitle("Programmer");
+        var list = repository.findByJobTitle("Accountant");
         assertThat(list).isNotEmpty();
     }
 
@@ -75,32 +82,18 @@ void testFindBySalaryRange() {
 //PAGE 3
 
 @Test
-void testFindEmployeesByJobTitle() {
+    void testFindEmployeesByJobId() {
 
-    var list = repository.findJobWithEmployeesByJobTitle("Programmer");
+        List<EmployeeProjection> employees = employeeRepository.findEmployeesByJob_JobId("AC_ACCOUNT");
 
-    assertThat(list).isNotEmpty();
+        assertThat(employees).isNotEmpty();
 
-    Job job = list.get(0);
+        EmployeeProjection employee = employees.get(0);
 
-    // print job
-    System.out.println("Job: " + job.getJobTitle());
-
-    // print count
-    System.out.println("Total Employees: " + job.getEmployees().size());
-
-    // print employees (FIRST + LAST name + email)
-    job.getEmployees().forEach(emp ->
-        System.out.println(
-                emp.getFirstName() + " " +
-                emp.getLastName() + " - " +
-                emp.getEmail()
-        )
-);
-
-    // assertion
-    assertThat(job.getEmployees()).isNotEmpty();
-
-    assertThat(job.getEmployees()).allMatch(emp -> emp.getEmail() != null);
-}
+        assertThat(employee.getFirstName()).isNotNull();
+        assertThat(employee.getLastName()).isNotNull();
+        assertThat(employee.getEmail()).isNotNull();
+        assertThat(employee.getJob().getJobTitle()).isNotNull();
+        assertThat(employee.getDepartment().getDepartmentName()).isNotNull();
+    }
 }

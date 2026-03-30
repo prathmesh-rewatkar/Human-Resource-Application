@@ -30,6 +30,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     List<Employee> findByJob_JobTitle(String jobTitle);
 
+    List<EmployeeProjection> findEmployeesByJob_JobId(String jobId);
+
     List<Employee> findByDepartment_DepartmentName(String departmentName);
 
     List<ManagerProjection> findDistinctBySubordinatesIsNotEmpty(Pageable pageable);
