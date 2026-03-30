@@ -284,7 +284,7 @@ public class EmployeeRepositoryTest {
     @DisplayName("findByFirstNameAndLastName - valid data")
     void testFindByFirstNameAndLastName_Valid() {
         List<Employee> result = employeeRepository
-                .findByFirstNameAndLastName("John", "Doe");
+                .findByFirstNameAndLastName("Jennifer", "Whalen");
 
         assertThat(result).isNotEmpty();
     }
