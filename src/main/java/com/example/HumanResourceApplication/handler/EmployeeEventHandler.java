@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RepositoryEventHandler(Employee.class)
 public class EmployeeEventHandler {
@@ -18,6 +20,9 @@ public class EmployeeEventHandler {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private JobHistoryRepository jobHistoryRepository;
 
     @HandleBeforeCreate
     @HandleBeforeSave
@@ -44,6 +49,44 @@ public class EmployeeEventHandler {
                     .orElseThrow(() -> new RuntimeException("Manager not found"));
 
             employee.setManager(manager);
+        }
+
+
+        if (employee.getEmployeeId() != null) {
+
+            Employee existing = employeeRepository.findByEmployeeId(employee.getEmployeeId())
+                    .orElseThrow();
+
+            boolean deptChanged = existing.getDepartment() != null &&
+                    employee.getDepartment() != null &&
+                    !existing.getDepartment().getDepartmentId()
+                            .equals(employee.getDepartment().getDepartmentId());
+
+            boolean jobChanged = existing.getJob() != null &&
+                    employee.getJob() != null &&
+                    !existing.getJob().getJobId()
+                            .equals(employee.getJob().getJobId());
+
+            //  ONLY ONE HISTORY ENTRY
+            if (deptChanged || jobChanged) {
+
+                JobHistory history = new JobHistory();
+
+                JobHistoryId id = new JobHistoryId();
+                id.setEmployeeId(existing.getEmployeeId());
+                id.setStartDate(LocalDate.now()); // ️ must be unique
+
+                history.setId(id);
+                history.setEndDate(LocalDate.now());
+
+                //  store OLD values (before update)
+                history.setJob(existing.getJob());
+                history.setDepartment(existing.getDepartment());
+
+                history.setEmployee(existing);
+
+                jobHistoryRepository.save(history);
+            }
         }
     }
 }
