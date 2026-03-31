@@ -30,13 +30,13 @@ public class ManagerApiTest {
 
     @Test
     void test_getAllManagers() throws Exception {
-        mockMvc.perform(get("/api/v1/managers?page=0&size=5"))
+        mockMvc.perform(get("/employees/managers?page=0&size=5"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGetManagerByEmail() throws Exception {
-        mockMvc.perform(get("/api/v1/manager/by-email")
+        mockMvc.perform(get("/employees/managers/by-email")
                         .param("email", "sking@company.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("sking@company.com"));
@@ -46,7 +46,7 @@ public class ManagerApiTest {
     @Test
     void testGetSubordinates_InvalidPathVariable() throws Exception {
 
-        mockMvc.perform(get("/api/v1/managers/abc/subordinates"))
+        mockMvc.perform(get("/employees/abc/subordinates"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -56,7 +56,7 @@ public class ManagerApiTest {
 
         //when(employeeRepository.existsById(101)).thenReturn(true);
 
-        mockMvc.perform(get("/api/v1/managers/101/subordinates"))
+        mockMvc.perform(get("/employees/101/subordinates"))
                 .andExpect(status().isOk());
     }
 
@@ -65,7 +65,7 @@ public class ManagerApiTest {
 
         //when(employeeRepository.existsById(999)).thenReturn(false);
 
-        mockMvc.perform(get("/api/v1/managers/999/subordinates"))
+        mockMvc.perform(get("/employees/999/subordinates"))
                 .andExpect(status().isNotFound());
     }
 
@@ -74,7 +74,7 @@ public class ManagerApiTest {
     @Transactional
     void testDeleteEmployee_InvalidPathVariable() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/deleteManager/abc"))
+        mockMvc.perform(delete("/employees/abc"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -83,7 +83,7 @@ public class ManagerApiTest {
     @Transactional
     void testDeleteEmployee_ValidId() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/deleteManager/101"))
+        mockMvc.perform(delete("/employees/101"))
                 .andExpect(status().isOk())
                .andExpect(content().string("Manager deleted and subordinates reassigned"));
     }
@@ -93,7 +93,7 @@ public class ManagerApiTest {
 
     @Test
     void testgetAllManagersByDepartment() throws Exception {
-        mockMvc.perform(get("/api/v1/manager/by-department")
+        mockMvc.perform(get("/employees/managers/by-department")
                         .param("departmentId", "20"))
                 .andExpect(status().isOk());
     }
@@ -108,7 +108,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/api/v1/update-manager")
+        mockMvc.perform(put("/employees/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -126,7 +126,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/api/v1/update-manager")
+        mockMvc.perform(put("/employees/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -144,7 +144,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/api/v1/update-manager")
+        mockMvc.perform(put("/employees/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -162,7 +162,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/api/v1/update-manager")
+        mockMvc.perform(put("/employees/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -180,7 +180,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/api/v1/update-manager")
+        mockMvc.perform(put("/employees/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -191,7 +191,7 @@ public class ManagerApiTest {
     @Test
     void testGetManagersByDepartment_InvalidDepartment() throws Exception {
 
-        mockMvc.perform(get("/api/v1/manager/by-department")
+        mockMvc.perform(get("/employees/managers/by-department")
                         .param("departmentId", "999"))
                 .andExpect(status().isNotFound());
     }
@@ -199,7 +199,7 @@ public class ManagerApiTest {
     @Test
     void testGetManagersByDepartment_ValidDepartment() throws Exception {
 
-        mockMvc.perform(get("/api/v1/manager/by-department")
+        mockMvc.perform(get("/employees/managers/by-department")
                         .param("departmentId", "10"))
                 .andExpect(status().isOk());
     }
@@ -207,7 +207,7 @@ public class ManagerApiTest {
     @Test
     void testGetManagersByDepartment_NoManagerDepartment() throws Exception {
 
-        mockMvc.perform(get("/api/v1/manager/by-department")
+        mockMvc.perform(get("/employees/managers/by-department")
                         .param("departmentId", "120"))
                 .andExpect(status().isOk());
     }
