@@ -8,9 +8,11 @@ import com.example.HumanResourceApplication.projection.ManagerIdProjection;
 import com.example.HumanResourceApplication.projection.ManagerProjection;
 import com.example.HumanResourceApplication.repository.DepartmentRepository;
 import com.example.HumanResourceApplication.repository.EmployeeRepository;
+import com.example.HumanResourceApplication.repository.JobHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
@@ -27,7 +29,8 @@ public class EmployeeController {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-
+    @Autowired
+    private JobHistoryRepository jobHistoryRepository;
 
     @GetMapping("/managers")
     public List<ManagerProjection> getAllManagers( @PageableDefault(size = 5, sort = "employeeId")Pageable pageable) {
@@ -49,18 +52,30 @@ public class EmployeeController {
     }
 
 
+    @Transactional
     @DeleteMapping("/deleteManager/{id}")
     public ResponseEntity<?>deleteManager(@PathVariable Integer id){
         Employee e=employeeRepository.findByEmployeeId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found to be deleted"));
-
+        System.out.println("Hereeeee");
         Employee manager=e.getManager();
+        System.out.println(manager.getEmployeeId());
         List<Employee>subordinates=e.getSubordinates();
-        if(!subordinates.isEmpty()){
+        System.out.println(subordinates);
+        System.out.println(manager.getClass());
+        if(subordinates != null && !subordinates.isEmpty()){
             for(Employee emp:subordinates){
                 emp.setManager(manager);
+                //employeeRepository.save(emp);
+                System.out.println("Helloooo");
             }
+            e.getSubordinates().clear();
+            //employeeRepository.saveAll(subordinates);
+            //employeeRepository.flush();
+
+            employeeRepository.flush();
         }
+        jobHistoryRepository.deleteByEmployeeEmployeeId(e.getEmployeeId());
         employeeRepository.delete(e);
         return ResponseEntity.ok("Manager deleted and subordinates reassigned");
     }
