@@ -37,9 +37,9 @@ public class ManagerApiTest {
     @Test
     void testGetManagerByEmail() throws Exception {
         mockMvc.perform(get("/api/v1/manager/by-email")
-                        .param("email", "SHIGGINS"))
+                        .param("email", "sking@company.com"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("SHIGGINS"));
+                .andExpect(jsonPath("$.email").value("sking@company.com"));
     }
 
 

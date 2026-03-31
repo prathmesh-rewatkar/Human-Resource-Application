@@ -58,11 +58,11 @@ public class ManagerRepositoryTest {
     @Test
     void testFindManagerByEmail_CorrectEmail(){
         var result = employeeRepository
-                .findDistinctBySubordinatesIsNotEmptyAndEmail("SHIGGINS");
+                .findDistinctBySubordinatesIsNotEmptyAndEmail("sking@company.com");
 
         //  Assertions
         assertThat(result).isNotNull();
-        assertThat(result.getEmail()).isEqualTo("SHIGGINS");
+        assertThat(result.getEmail()).isEqualTo("sking@company.com");
     }
 
     @Test
@@ -72,7 +72,6 @@ public class ManagerRepositoryTest {
 
         //  Assertions
         assertThat(result).isNull();
-        //assertThat(result.getEmail()).isEqualTo("SHIGGINS");
     }
 
 
