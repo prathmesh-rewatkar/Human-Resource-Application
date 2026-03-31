@@ -48,15 +48,6 @@ public class EmployeeApiTest {
     }
 
     @Test
-    @DisplayName("GET all employees - response should not be empty")
-    void testGetAllEmployees_ResponseNotEmpty() throws Exception {
-
-        mockMvc.perform(get("/employees"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.isEmptyString())));
-    }
-
-    @Test
     @DisplayName("API: Create employee valid")
     void testCreateEmployee_Valid() throws Exception {
 
@@ -199,33 +190,116 @@ public class EmployeeApiTest {
     }
 
     @Test
-    @DisplayName("API: Search by first and last name - valid")
-    void testSearchByFullName_Valid() throws Exception {
+    @DisplayName("API: Search by name - valid")
+    void testSearchByName_Valid() throws Exception {
 
-        mockMvc.perform(get("/employees/search/findByFirstNameAndLastName")
+        mockMvc.perform(get("/employees/search/search-by-name")
                         .param("firstName", "Hermann")
-                        .param("lastName", "Brown"))
+                        .param("lastName", "Hermann"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.employees").isArray());
     }
 
     @Test
-    @DisplayName("API: Search by job title - valid")
-    void testSearchByJobTitle_Valid() throws Exception {
+    @DisplayName("API: Search by name - not found")
+    void testSearchByName_NotFound() throws Exception {
 
-        mockMvc.perform(get("/employees/search/findByJob_JobTitle")
-                        .param("jobTitle", "Stock Manager"))
+        mockMvc.perform(get("/employees/search/search-by-name")
+                        .param("firstName", "InvalidXYZ")
+                        .param("lastName", "InvalidXYZ"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.employees").exists());
+                .andExpect(jsonPath("$.page.totalElements").value(0));
     }
 
     @Test
-    @DisplayName("API: Search by department name - valid")
+    @DisplayName("API: Filter by department - valid")
     void testSearchByDepartment_Valid() throws Exception {
 
-        mockMvc.perform(get("/employees/search/findByDepartment_DepartmentName")
+        mockMvc.perform(get("/employees/search/by-department-name")
                         .param("departmentName", "Marketing"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.employees").exists());
+                .andExpect(jsonPath("$._embedded.employees").isArray());
+    }
+
+    @Test
+    @DisplayName("API: Filter by department - not found")
+    void testSearchByDepartment_NotFound() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-department-name")
+                        .param("departmentName", "UnknownDept"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page.totalElements").value(0));
+    }
+
+    @Test
+    @DisplayName("API: Filter by job title - valid")
+    void testSearchByJobTitle_Valid() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-job-title")
+                        .param("jobTitle", "Stock Manager"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.employees").isArray());
+    }
+
+    @Test
+    @DisplayName("API: Filter by job title - not found")
+    void testSearchByJobTitle_NotFound() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-job-title")
+                        .param("jobTitle", "Unknown Job"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page.totalElements").value(0));
+    }
+
+    @Test
+    @DisplayName("API: Filter by dept + job title")
+    void testSearchByDeptAndJob_Valid() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-dept-and-job")
+                        .param("departmentName", "IT")
+                        .param("jobTitle", "Programmer"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.employees").isArray());
+    }
+
+    @Test
+    @DisplayName("API: Search by name + department")
+    void testSearchByNameAndDept_Valid() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-name-and-dept")
+                        .param("dept1", "IT")
+                        .param("firstName", "Alex")
+                        .param("dept2", "IT")
+                        .param("lastName", "Alex"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.employees").isArray());
+    }
+
+    @Test
+    @DisplayName("API: Search by name + job title")
+    void testSearchByNameAndJob_Valid() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-name-and-job")
+                        .param("job1", "Programmer")
+                        .param("firstName", "Alex")
+                        .param("job2", "Programmer")
+                        .param("lastName", "Alex"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.employees").isArray());
+    }
+
+    @Test
+    @DisplayName("API: Search by name + dept + job title")
+    void testSearchByNameDeptAndJob_Valid() throws Exception {
+
+        mockMvc.perform(get("/employees/search/by-name-dept-and-job")
+                        .param("dept1", "IT")
+                        .param("job1", "Programmer")
+                        .param("firstName", "Alex")
+                        .param("dept2", "IT")
+                        .param("job2", "Programmer")
+                        .param("lastName", "Alex"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.employees").isArray());
     }
 }

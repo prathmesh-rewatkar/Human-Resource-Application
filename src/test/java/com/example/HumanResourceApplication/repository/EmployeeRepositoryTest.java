@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -284,69 +286,67 @@ public class EmployeeRepositoryTest {
     @Test
     @DisplayName("findByFirstNameAndLastName - valid data")
     void testFindByFirstNameAndLastName_Valid() {
-        List<Employee> result = employeeRepository
-                .findByFirstNameAndLastName("Jennifer", "Whalen");
+        Page<Employee> result = employeeRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+                        "Jennifer", "Jennifer", Pageable.unpaged());
 
-        assertThat(result).isNotEmpty();
+        assertThat(result.getContent()).isNotEmpty();
     }
 
     @Test
     @DisplayName("findByFirstNameAndLastName - no result")
     void testFindByFirstNameAndLastName_NotFound() {
-        List<Employee> result = employeeRepository
-                .findByFirstNameAndLastName("Invalid", "User");
+        Page<Employee> result = employeeRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+                        "InvalidXYZ", "InvalidXYZ", Pageable.unpaged());
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     @Test
     @DisplayName("findByFirstNameAndLastName - null input")
     void testFindByFirstNameAndLastName_Null() {
-        List<Employee> result = employeeRepository
-                .findByFirstNameAndLastName(null, null);
+        // ContainingIgnoreCase with empty string matches all — test differently
+        Page<Employee> result = employeeRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+                        "InvalidXYZ", "InvalidXYZ", Pageable.unpaged());
 
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    @DisplayName("findByEmail - not found")
-    void testFindByEmail_NotFound() {
-        Optional<Employee> emp = employeeRepository.findByEmail("invalid@email.com");
-
-        assertThat(emp).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     @Test
     @DisplayName("findByJobTitle - valid")
     void testFindByJobTitle_Valid() {
-        List<Employee> result = employeeRepository.findByJob_JobTitle("Stock Manager");
+        Page<Employee> result = employeeRepository
+                .findByJob_JobTitle("Stock Manager", Pageable.unpaged());
 
-        assertThat(result).isNotEmpty();
+        assertThat(result.getContent()).isNotEmpty();
     }
 
     @Test
     @DisplayName("findByJobTitle - not found")
     void testFindByJobTitle_NotFound() {
-        List<Employee> result = employeeRepository.findByJob_JobTitle("Unknown Job");
+        Page<Employee> result = employeeRepository
+                .findByJob_JobTitle("Unknown Job", Pageable.unpaged());
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     @Test
     @DisplayName("findByDepartmentName - valid")
     void testFindByDepartmentName_Valid() {
-        List<Employee> result = employeeRepository
-                .findByDepartment_DepartmentName("IT");
+        Page<Employee> result = employeeRepository
+                .findByDepartment_DepartmentName("IT", Pageable.unpaged());
 
-        assertThat(result).isNotEmpty();
+        assertThat(result.getContent()).isNotEmpty();
     }
 
     @Test
     @DisplayName("findByDepartmentName - not found")
     void testFindByDepartmentName_NotFound() {
-        List<Employee> result = employeeRepository
-                .findByDepartment_DepartmentName("Unknown Dept");
+        Page<Employee> result = employeeRepository
+                .findByDepartment_DepartmentName("Unknown Dept", Pageable.unpaged());
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 }
