@@ -80,15 +80,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     }
 
     @RestResource(path = "by-department", rel = "managersByDepartment")
-    List<ManagerIdProjection> findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(Integer departmentId);
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(Integer departmentId);
 
     long countByManager_EmployeeId(Integer managerId);
 
-    List<ManagerProjection> findByFirstNameContainingIgnoreCase(
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmptyAndFirstNameContainingIgnoreCase(
             String firstName
     );
 
-    List<ManagerProjection> findByLastNameContainingIgnoreCase(
+    List<ManagerProjection> findDistinctBySubordinatesIsNotEmptyAndLastNameContainingIgnoreCase(
             String LastName
     );
 }
