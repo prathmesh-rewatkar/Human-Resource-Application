@@ -185,7 +185,8 @@ public class EmployeeApiTest {
     @DisplayName("API: Get employee - not found")
     void testGetEmployee_NotFound() throws Exception {
 
-        mockMvc.perform(get("/employees/999999"))
+        mockMvc.perform(get("/employees/search/search-by-id")
+                        .param("employeeId", "9999999"))
                 .andExpect(status().isNotFound());
     }
 

@@ -21,6 +21,8 @@ import java.util.Optional;
 )
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
+
+    @RestResource(path = "search-by-id", rel = "searchById")
     Optional<Employee> findByEmployeeId(Integer empId);
 
     @RestResource(path = "search-by-name", rel = "searchByName")
