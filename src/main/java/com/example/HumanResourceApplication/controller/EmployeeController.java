@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class EmployeeController {
         return managers;
     }
 
-    @GetMapping("/managers/{id}/subordinates")
+    @GetMapping("/{id}/subordinates")
     public List<EmployeeRecordProjection> getSubordinates(@PathVariable Integer id) {
 
         if (!employeeRepository.existsById(id)){
@@ -53,7 +53,7 @@ public class EmployeeController {
 
 
     @Transactional
-    @DeleteMapping("/deleteManager/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?>deleteManager(@PathVariable Integer id){
         Employee e=employeeRepository.findByEmployeeId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found to be deleted"));
@@ -81,13 +81,13 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/manager/by-email")
+    @GetMapping("/managers/by-email")
     public ManagerProjection getManagerByEmail(@RequestParam String email) {
         return employeeRepository
                 .findDistinctBySubordinatesIsNotEmptyAndEmail(email);
     }
 
-    @GetMapping("/manager/by-department")
+    @GetMapping("/managers/by-department")
     public List<ManagerIdProjection> getManagerByDepartment(@RequestParam Integer departmentId) {
 
         if (!departmentRepository.existsById(departmentId)) {
@@ -98,12 +98,12 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/manager/by-firstname")
+    @GetMapping("/managers/by-firstname")
     public List<ManagerProjection> getManagersByFirstName(@RequestParam String firstname){
         return employeeRepository.findByFirstNameContainingIgnoreCase(firstname);
     }
 
-    @GetMapping("/manager/by-lastname")
+    @GetMapping("/managers/by-lastname")
     public List<ManagerProjection> getManagersByLastName(@RequestParam String lastname){
         return employeeRepository.findByLastNameContainingIgnoreCase(lastname);
     }
