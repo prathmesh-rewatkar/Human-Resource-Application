@@ -88,7 +88,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/managers/by-department")
-    public List<ManagerIdProjection> getManagerByDepartment(@RequestParam Integer departmentId) {
+    public List<ManagerProjection> getManagerByDepartment(@RequestParam Integer departmentId) {
 
         if (!departmentRepository.existsById(departmentId)) {
             throw new ResourceNotFoundException("Department not found");
@@ -100,12 +100,12 @@ public class EmployeeController {
 
     @GetMapping("/managers/by-firstname")
     public List<ManagerProjection> getManagersByFirstName(@RequestParam String firstname){
-        return employeeRepository.findByFirstNameContainingIgnoreCase(firstname);
+        return employeeRepository.findDistinctBySubordinatesIsNotEmptyAndFirstNameContainingIgnoreCase(firstname);
     }
 
     @GetMapping("/managers/by-lastname")
     public List<ManagerProjection> getManagersByLastName(@RequestParam String lastname){
-        return employeeRepository.findByLastNameContainingIgnoreCase(lastname);
+        return employeeRepository.findDistinctBySubordinatesIsNotEmptyAndLastNameContainingIgnoreCase(lastname);
     }
 
 

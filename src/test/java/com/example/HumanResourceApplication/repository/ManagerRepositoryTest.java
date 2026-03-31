@@ -80,14 +80,14 @@ public class ManagerRepositoryTest {
     @Test
     void testFindManagers_InvalidDepartmentId() {
 
-        List<ManagerIdProjection> result =
+        List<ManagerProjection> result =
                 employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(999);
         assertThat(result.size()==0);
 
     }
     @Test
     void testFindManagerByDepartmentName_ValidData(){
-        List<ManagerIdProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(90);
+        List<ManagerProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(90);
         assertThat(list).isNotNull();
         System.out.println(list.get(0).getFirstName());
         //assertThat(list.get(0).getEmail())
@@ -95,7 +95,7 @@ public class ManagerRepositoryTest {
 
     @Test
     void testFindManagerByDepartmentName_NoManagerDepartment(){
-        List<ManagerIdProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(120);
+        List<ManagerProjection>list=employeeRepository.findDistinctBySubordinatesIsNotEmptyAndDepartment_DepartmentId(120);
         assertThat(list.isEmpty());
         //System.out.println(list.get(0).getEmail());
         //assertThat(list.get(0).getEmail())
