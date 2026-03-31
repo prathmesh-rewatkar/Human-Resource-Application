@@ -1,36 +1,33 @@
 package com.example.HumanResourceApplication.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import java.util.List;
 
-@Entity 
+@Entity
 @Table(name = "countries")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Country {
 
     @Id
-    @Column(name = "country_id",columnDefinition = "CHAR(4)")
+    @NotBlank(message = "Country ID is required")
+    @Size(max = 4, message = "Country ID must not exceed 4 characters")
+    @Column(name = "country_id", columnDefinition = "CHAR(4)")
     private String countryId;
 
+    @NotBlank(message = "Country name is required")
+    @Size(max = 60, message = "Country name must not exceed 60 characters")
     @Column(name = "country_name", length = 60)
     private String countryName;
 
+    @NotNull(message = "Region is required")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="region_id")
-    @NotNull(message = "Region is required")  //
+    @JoinColumn(name = "region_id")
     private Region region;
-
-//    @OneToMany(mappedBy = "location" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-//    private List<Location> locations ;
 
     @OneToMany(mappedBy = "country")
     private List<Location> locations;

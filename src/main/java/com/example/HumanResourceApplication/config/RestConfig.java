@@ -1,7 +1,7 @@
 package com.example.HumanResourceApplication.config;
 
 import com.example.HumanResourceApplication.entity.Region;
-import com.example.HumanResourceApplication.event.RegionEventHandler;
+import com.example.HumanResourceApplication.handler.RegionEventHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;

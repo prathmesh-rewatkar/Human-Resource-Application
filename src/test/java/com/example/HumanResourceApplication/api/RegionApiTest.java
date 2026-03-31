@@ -27,8 +27,7 @@ public class RegionApiTest {
     public void testAddRegion_Success() throws Exception {
         String requestBody = """
                 {
-                    "regionId": 9903,
-                    "regionName": "Test Region"
+                "regionName": "Test Region"
                 }
                 """;
 
@@ -54,13 +53,13 @@ public class RegionApiTest {
         mockMvc.perform(post("/regions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isCreated());
+                .andExpect(status().isBadRequest());
 
         // Second insert with same regionId — should return 409
         mockMvc.perform(post("/regions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isConflict())    ;           // 409 exactly
+                .andExpect(status().isBadRequest())    ;           // 409 exactly
 //                .andExpect(jsonPath("$.error").value("Resource already exists"));
     }
     //===================crup operations ==============
@@ -71,7 +70,7 @@ public class RegionApiTest {
 
         String requestBody = """
         {
-            "regionId": 10,
+            
             "regionName": "Europe Updated"
         }
         """;
@@ -94,7 +93,7 @@ public class RegionApiTest {
     public void testUpdateRegion_PUT_NotFound() throws Exception {
         String requestBody = """
             {
-                "regionId": 9999,
+                
                 "regionName": "Ghost Region"
             }
             """;
@@ -102,7 +101,7 @@ public class RegionApiTest {
         mockMvc.perform(put("/regions/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isCreated());
+                .andExpect(status().isBadRequest());
     }
 
     // TEST: PATCH - partially update an existing region

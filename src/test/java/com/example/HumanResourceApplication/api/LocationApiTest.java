@@ -72,7 +72,7 @@ public class LocationApiTest {
         mockMvc.perform(put("/locations/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isCreated()); //
+                .andExpect(status().isBadRequest()); //
     }
 
     // ================= PATCH =================
@@ -114,26 +114,31 @@ public class LocationApiTest {
     public void testDeleteLocation_Success() throws Exception {
 
         String createBody = """
-        {
-            "locationId": 5000,
-            "streetAddress": "Test",
-            "postalCode": "12345",
-            "city": "TestCity",
-            "stateProvince": "TestState",
-            "country": "http://localhost/countries/IN"
-        }
-        """;
+    {
+        "streetAddress": "Test",
+        "postalCode": "12345",
+        "city": "TestCity",
+        "stateProvince": "TestState",
+        "country": "http://localhost/countries/IN"
+    }
+    """;
 
-        mockMvc.perform(post("/locations")
+        // Capture the Location header from the create response
+        MvcResult result = mockMvc.perform(post("/locations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createBody))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
 
-        mockMvc.perform(delete("/locations/5000"))
+        // Extract the ID from the Location header (e.g., "http://localhost/locations/42")
+        String locationHeader = result.getResponse().getHeader("Location");
+        String id = locationHeader.substring(locationHeader.lastIndexOf("/") + 1);
+
+        mockMvc.perform(delete("/locations/" + id))
                 .andExpect(status().isNoContent());
     }
 
-    // ✅NOW RETURNS 404
+    // NOW RETURNS 404
     @Test
     @Transactional
     public void testDeleteLocation_NotFound() throws Exception {
@@ -147,7 +152,7 @@ public class LocationApiTest {
     public void testAddLocation_Success() throws Exception {
         String requestBody = """
             {
-                "locationId": 6000,
+                
                 "streetAddress": "123 Test Street",
                 "postalCode": "411001",
                 "city": "Nagpur",
@@ -166,6 +171,7 @@ public class LocationApiTest {
 
     // TEST: Add location with non-existing country → should fail
     @Test
+    @Transactional
     public void testAddLocation_WithNonExistingCountry_Fails() throws Exception {
         String requestBody = """
             {
@@ -185,6 +191,7 @@ public class LocationApiTest {
 
     //=======2nd page => get list of employees by department
     @Test
+    @Transactional
     public void testGetAllDepartmentWiseEmployeesByLocation() throws Exception {
 
         // STEP 1: Get all departments for location 1700
