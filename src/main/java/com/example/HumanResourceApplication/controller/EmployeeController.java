@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
+
+
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/managers")
 public class EmployeeController {
 
     @Autowired
@@ -32,7 +34,7 @@ public class EmployeeController {
     @Autowired
     private JobHistoryRepository jobHistoryRepository;
 
-    @GetMapping("/managers")
+    @GetMapping("/")
     public List<ManagerProjection> getAllManagers( @PageableDefault(size = 5, sort = "employeeId")Pageable pageable) {
         List<ManagerProjection>managers= employeeRepository.findDistinctBySubordinatesIsNotEmpty(pageable);
         if (managers.isEmpty()) {
@@ -57,7 +59,7 @@ public class EmployeeController {
     public ResponseEntity<?>deleteManager(@PathVariable Integer id){
         Employee e=employeeRepository.findByEmployeeId(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found to be deleted"));
-        System.out.println("Hereeeee");
+
         Employee manager=e.getManager();
         System.out.println(manager.getEmployeeId());
         List<Employee>subordinates=e.getSubordinates();
@@ -67,7 +69,7 @@ public class EmployeeController {
             for(Employee emp:subordinates){
                 emp.setManager(manager);
                 //employeeRepository.save(emp);
-                System.out.println("Helloooo");
+
             }
             e.getSubordinates().clear();
             //employeeRepository.saveAll(subordinates);
@@ -81,13 +83,13 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/managers/by-email")
+    @GetMapping("/by-email")
     public ManagerProjection getManagerByEmail(@RequestParam String email) {
         return employeeRepository
                 .findDistinctBySubordinatesIsNotEmptyAndEmail(email);
     }
 
-    @GetMapping("/managers/by-department")
+    @GetMapping("/by-department")
     public List<ManagerProjection> getManagerByDepartment(@RequestParam Integer departmentId) {
 
         if (!departmentRepository.existsById(departmentId)) {
@@ -98,19 +100,19 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/managers/by-firstname")
+    @GetMapping("/by-firstname")
     public List<ManagerProjection> getManagersByFirstName(@RequestParam String firstname){
         return employeeRepository.findDistinctBySubordinatesIsNotEmptyAndFirstNameContainingIgnoreCase(firstname);
     }
 
-    @GetMapping("/managers/by-lastname")
+    @GetMapping("/by-lastname")
     public List<ManagerProjection> getManagersByLastName(@RequestParam String lastname){
         return employeeRepository.findDistinctBySubordinatesIsNotEmptyAndLastNameContainingIgnoreCase(lastname);
     }
 
 
 
-    @PutMapping("/update-manager")
+    @PatchMapping("/update-manager")
     public ResponseEntity<?> updateManager(@RequestBody UpdateManagerDTO dto) {
 
         Employee employee = employeeRepository.findByEmployeeId(dto.getEmployeeId())
@@ -134,6 +136,17 @@ public class EmployeeController {
 
         employeeRepository.save(employee);
         return ResponseEntity.ok("Manager updated successfully");
+    }
+
+
+    @GetMapping("/{id}/hierarchy")
+    public List<Employee> getHierarchy(@PathVariable Integer id) {
+
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employee not found");
+        }
+
+        return employeeRepository.getHierarchy(id);
     }
 
 
