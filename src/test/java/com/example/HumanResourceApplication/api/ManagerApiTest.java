@@ -108,7 +108,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/managers/update-manager")
+        mockMvc.perform(patch("/managers/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -126,7 +126,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/managers/update-manager")
+        mockMvc.perform(patch("/managers/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -144,7 +144,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/managers/update-manager")
+        mockMvc.perform(patch("/managers/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -162,7 +162,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/managers/update-manager")
+        mockMvc.perform(patch("/managers/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
@@ -180,7 +180,7 @@ public class ManagerApiTest {
         }
         """;
 
-        mockMvc.perform(put("/managers/update-manager")
+        mockMvc.perform(patch("/managers/update-manager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andDo(print())
