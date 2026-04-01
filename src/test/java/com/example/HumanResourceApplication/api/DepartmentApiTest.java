@@ -151,8 +151,8 @@ public class DepartmentApiTest
         String json = """
                 {
                   "departmentName": "Test Department",
-                    "location": "http://localhost/locations/1700",
-                    "manager": "http://localhost/employees/100"
+                    "location": "/locations/1700",
+                    "manager": "/employees/100"
                 }
                 """;
         mockMvc.perform(post("/department")
@@ -168,7 +168,7 @@ public class DepartmentApiTest
         String json = """
             {
               "departmentName": "TestDup123",
-              "location": "http://localhost/locations/1700"
+              "location": "/locations/1700"
             }
             """;
         mockMvc.perform(post("/department")
@@ -220,7 +220,7 @@ public class DepartmentApiTest
     void testPatchDepartmentLocation() throws Exception {
         String json = """
             {
-              "location": "http://localhost/locations/1700"
+              "location": "/locations/1700"
             }
             """;
         mockMvc.perform(patch("/department/20")
@@ -234,7 +234,7 @@ public class DepartmentApiTest
     void testPatchDepartmentManager() throws Exception {
         String json = """
             {
-              "manager": "http://localhost/employees/201"
+              "manager": "employees/201"
             }
             """;
         mockMvc.perform(patch("/department/20")
@@ -252,7 +252,7 @@ public class DepartmentApiTest
                 {
      
                   "departmentName": "DeleteTest123",
-                  "location": "http://localhost/locations/1700"
+                  "location": "/locations/1700"
                 }
                 """;
         String location = mockMvc.perform(post("/department")
