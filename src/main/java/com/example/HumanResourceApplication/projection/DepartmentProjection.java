@@ -5,6 +5,7 @@ import org.springframework.data.rest.core.config.Projection;
 
 @Projection(name = "deptView", types = { Department.class })
 public interface DepartmentProjection {
+    Integer getDepartmentId();
     String getDepartmentName();
     LocationSummary getLocation();
     ManagerSummary getManager();

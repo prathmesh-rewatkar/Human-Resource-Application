@@ -17,10 +17,14 @@ public interface EmployeeProjection {
     String getPhoneNumber();
     LocalDate getHireDate();
     Double getSalary();
+    Double getCommissionPct();
 
     @Value("#{target.department != null ? target.department.departmentName : null}")
     String getDepartmentName();
 
     @Value("#{target.job != null ? target.job.jobTitle : null}")
     String getJobTitle();
+
+    @Value("#{target.manager != null ? target.manager.employeeId : null}")
+    Integer getManagerId();
 }
