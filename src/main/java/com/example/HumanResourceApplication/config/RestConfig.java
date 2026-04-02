@@ -1,6 +1,6 @@
 package com.example.HumanResourceApplication.config;
 
-import com.example.HumanResourceApplication.entity.Region;
+import com.example.HumanResourceApplication.entity.*;
 import com.example.HumanResourceApplication.handler.RegionEventHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,10 +20,10 @@ public class RestConfig implements RepositoryRestConfigurer {
             RepositoryRestConfiguration config,
             CorsRegistry cors) {
 
-        config.exposeIdsFor(Region.class);
+        config.exposeIdsFor(Region.class , Location.class , Department.class, Employee.class , Country.class);
 
         cors.addMapping("/**")
-                .allowedOrigins(allowedOrigins.split(",")) // 🔥 supports multiple
+                .allowedOrigins(allowedOrigins.split(","))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true);

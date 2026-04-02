@@ -29,7 +29,7 @@ public class CountryApiTest {
                 {
                     "countryId": "ZZ1",
                     "countryName": "Test Country",
-                    "region": "http://localhost/regions/10"
+                    "region": "/regions/10"
                 }
                 """;
 
@@ -48,7 +48,7 @@ public class CountryApiTest {
                 {
                     "countryId": "US",
                     "countryName": "United States of America",
-                    "region": "http://localhost/regions/20"
+                    "region": "/regions/20"
                 }
                 """;
 
@@ -66,7 +66,7 @@ public class CountryApiTest {
             {
                 "countryId": "ZZ",
                 "countryName": "Test Country",
-                "region": "http://localhost/regions/9999"
+                "region": "/regions/9999"
             }
             """;
 
@@ -85,7 +85,7 @@ public class CountryApiTest {
             {
                 "countryId": "US",
                 "countryName": "United States Updated",
-                "region": "http://localhost/regions/2"
+                "region": "/regions/2"
             }
             """;
 
@@ -103,7 +103,7 @@ public class CountryApiTest {
             {
                 "countryId": "ZZ2",
                 "countryName": "Ghost Country",
-                "region": "http://localhost/regions/10"
+                "region": "/regions/10"
             }
             """;
 
