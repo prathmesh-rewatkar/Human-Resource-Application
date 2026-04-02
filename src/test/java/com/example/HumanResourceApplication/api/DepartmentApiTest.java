@@ -36,7 +36,7 @@ public class DepartmentApiTest
         mockMvc.perform(get("/department"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.departments").isArray())
-                .andExpect(jsonPath("$._embedded.departments[0].departmentId").doesNotExist())
+                .andExpect(jsonPath("$._embedded.departments[0].departmentId").exists())
                 .andExpect(jsonPath("$._embedded.departments[0].departmentName").exists());
     }
 
