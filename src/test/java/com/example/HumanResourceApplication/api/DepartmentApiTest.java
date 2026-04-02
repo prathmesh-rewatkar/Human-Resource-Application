@@ -47,7 +47,7 @@ public class DepartmentApiTest
                         .param("projection", "deptView"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.departmentName").value("Marketing"))
-                .andExpect(jsonPath("$.departmentId").doesNotExist())
+                .andExpect(jsonPath("$.departmentId").value(20))
                 .andExpect(jsonPath("$._embedded.location.city").exists())
                 .andExpect(jsonPath("$._embedded.location.streetAddress").exists());
     }

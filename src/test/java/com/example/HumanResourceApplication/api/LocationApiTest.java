@@ -45,7 +45,7 @@ public class LocationApiTest {
                 "postalCode": "00989",
                 "city": "Roma",
                 "stateProvince": "Lazio",
-                "country": "http://localhost/countries/IT"
+                "country": "/countries/IT"
             }
             """;
 
@@ -65,7 +65,7 @@ public class LocationApiTest {
                 "postalCode": "00000",
                 "city": "Nowhere",
                 "stateProvince": "None",
-                "country": "http://localhost/countries/IT"
+                "country": "/countries/IT"
             }
             """;
 
@@ -119,7 +119,7 @@ public class LocationApiTest {
         "postalCode": "12345",
         "city": "TestCity",
         "stateProvince": "TestState",
-        "country": "http://localhost/countries/IN"
+        "country": "/countries/IN"
     }
     """;
 
@@ -157,7 +157,7 @@ public class LocationApiTest {
                 "postalCode": "411001",
                 "city": "Nagpur",
                 "stateProvince": "Maharashtra",
-                "country": "http://localhost/countries/IN"
+                "country": "/countries/IN"
             }
             """;
 
@@ -179,7 +179,7 @@ public class LocationApiTest {
                 "postalCode": "411001",
                 "city": "Nagpur",
                 "stateProvince": "Maharashtra",
-                "country": "http://localhost/countries/ZZ"
+                "country": "/countries/ZZ"
             }
             """;
 
@@ -212,7 +212,7 @@ public class LocationApiTest {
             String cleanHref = href.replace("{?projection}", "");
 
             // extract path after localhost e.g. "/department/10/employees"
-            String path = cleanHref.replace("http://localhost", "");
+            String path = cleanHref.replace("", "");
 
             mockMvc.perform(get(path))
                     .andExpect(status().isOk())
